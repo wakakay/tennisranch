@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>controller</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 12px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        .status.success {
+            background-color: #dff0d8;
+            color: #3c763d;
+            border: 1px solid #d6e9c6;
+            display: block;
+        }
+        .status.error {
+            background-color: #f2dede;
+            color: #a94442;
+            border: 1px solid #ebccd1;
+            display: block;
+        }
+        .status.info {
+            background-color: #d9edf7;
+            color: #31708f;
+            border: 1px solid #bce8f1;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1></h1>
+        <div class="button-group">
+            <button id="syncCategory">Sync Category</button>
+        </div>
+        <div class="button-group">
+            <button id="syncSeo">Sync SEO</button>
+        </div>
+        <div class="button-group">
+            <button id="syncOption">Sync Option</button>
+            <button id="syncOptionExtended">Sync Option Extended field</button>
+        </div>
+        <div class="button-group">
+            <button id="syncFilter">Sync Filter</button>
+        </div>
+        <div class="button-group">
+            <button id="syncManufacturer">Sync Manufacturer</button>
+        </div>
+        <div class="button-group">
+            <button id="syncProduct">Sync Product</button>
+            <button id="syncClearProductOption">Sync clear Product Option value invalid data</button>
+        </div>
+        <div class="button-group">
+            <button id="syncReturn">Sync Return</button>
+        </div>
+        <div class="button-group">
+            <button id="syncReview">Sync Review</button>
+        </div>
+        <div class="button-group">
+            <button id="syncBanner">Sync Banner</button>
+        </div>
+        <div class="button-group">
+            <button id="syncCustomer" class="sync-button">Sync customer and address</button>
+            <button id="syncCustomerOther" class="sync-button">Sync other customer</button>
+        </div>
+        <div id="status" class="status"></div>
+    </div>
+
+    <script>
+        // 显示状态
+        function showStatus(message, type) {
+            const status = document.getElementById('status');
+            status.className = 'status ' + type;
+            status.textContent = message;
+        }
+
+        // 发送同步请求
+        async function syncData(type) {
+            try {
+                showStatus('正在同步...', 'info');
+                const response = await fetch(`/sync/${type}`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                if (data.success) {
+                    showStatus(data.message, 'success');
+                } else {
+                    showStatus(data.message, 'error');
+                }
+            } catch (error) {
+                showStatus('同步失败: ' + error.message, 'error');
+            }
+        }
+
+        // 绑定按钮事件
+        document.getElementById('syncCategory').addEventListener('click', () => syncData('category'));
+        document.getElementById('syncSeo').addEventListener('click', () => syncData('seo'));
+        document.getElementById('syncOptionExtended').addEventListener('click', () => syncData('option-extended'));
+        document.getElementById('syncOption').addEventListener('click', () => syncData('option'));
+        document.getElementById('syncFilter').addEventListener('click', () => syncData('filter'));
+        document.getElementById('syncManufacturer').addEventListener('click', () => syncData('manufacturer'));
+        document.getElementById('syncProduct').addEventListener('click', () => syncData('product'));
+        document.getElementById('syncClearProductOption').addEventListener('click', () => syncData('clear-invalid-product-option-values'));
+        document.getElementById('syncReturn').addEventListener('click', () => syncData('return'));
+        document.getElementById('syncReview').addEventListener('click', () => syncData('review'));
+        document.getElementById('syncBanner').addEventListener('click', () => syncData('banner'));
+        document.getElementById('syncCustomer').addEventListener('click', () => syncData('customer'));
+        document.getElementById('syncCustomerOther').addEventListener('click', () => syncData('customer-other'));
+    </script>
+</body>
+</html> 
