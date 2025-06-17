@@ -94,7 +94,7 @@
         <div class="button-group">
             <button id="syncProduct">Sync Product</button>
             <button id="syncClearProductOption">Sync clear Product Option value invalid data</button>
-        </div>
+        </div>   
         <div class="button-group">
             <button id="syncReturn">Sync Return</button>
         </div>
@@ -107,6 +107,14 @@
         <div class="button-group">
             <button id="syncCustomer" class="sync-button">Sync customer and address</button>
             <button id="syncCustomerOther" class="sync-button">Sync other customer</button>
+        </div>
+        <div class="button-group">
+            <button id="syncCoupon">Sync Coupon</button>
+            <button id="createNewCustomerCouponTables">Create New Customer Coupon</button>
+            <button id="syncNewCustomerCoupon">Sync New Customer Coupon</button>
+        </div>
+        <div class="button-group">
+            <button id="syncZone">Sync Zone</button>
         </div>
         <div id="status" class="status"></div>
     </div>
@@ -146,11 +154,15 @@
         document.getElementById('syncManufacturer').addEventListener('click', () => syncData('manufacturer'));
         document.getElementById('syncProduct').addEventListener('click', () => syncData('product'));
         document.getElementById('syncClearProductOption').addEventListener('click', () => syncData('clear-invalid-product-option-values'));
+        document.getElementById('syncCoupon').addEventListener('click', () => syncData('coupon'));
+        document.getElementById('createNewCustomerCouponTables').addEventListener('click', () => syncData('create-new-customer-coupon-tables'));
+        document.getElementById('syncNewCustomerCoupon').addEventListener('click', () => syncData('sync-new-customer-coupon'));
         document.getElementById('syncReturn').addEventListener('click', () => syncData('return'));
         document.getElementById('syncReview').addEventListener('click', () => syncData('review'));
         document.getElementById('syncBanner').addEventListener('click', () => syncData('banner'));
         document.getElementById('syncCustomer').addEventListener('click', () => syncData('customer'));
         document.getElementById('syncCustomerOther').addEventListener('click', () => syncData('customer-other'));
+        document.getElementById('syncZone').addEventListener('click', () => syncData('zone'));
     </script>
 </body>
 </html> 
