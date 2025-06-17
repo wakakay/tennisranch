@@ -4,10 +4,11 @@ const syncController = require('../controllers/syncController');
 const ProductController = require('../controllers/ProductController');
 const bannerController = require('../controllers/BannerController');
 const CustomerOtherController = require('../controllers/CustomerOtherController');
+const ZoneController = require('../controllers/ZoneController');
+const CartController = require('../controllers/CartController');
 const NewCustomerCouponSync = require('../services/NewCustomerCouponSync');
 const ZoneSync = require('../services/ZoneSync');
 const logger = require('../utils/logger');
-const ZoneController = require('../controllers/ZoneController');
 
 /**
  * 同步分类数据
@@ -105,4 +106,10 @@ router.post('/customer-other', CustomerOtherController.sync);
  */
 router.post('/zone', ZoneController.sync);
 
-module.exports = router; 
+/**
+ * 同步购物车数据
+ * @route POST /api/sync/cart
+ */
+router.post('/cart', CartController.sync);
+
+module.exports = router;

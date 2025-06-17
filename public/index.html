@@ -94,7 +94,7 @@
         <div class="button-group">
             <button id="syncProduct">Sync Product</button>
             <button id="syncClearProductOption">Sync clear Product Option value invalid data</button>
-        </div>   
+        </div>
         <div class="button-group">
             <button id="syncReturn">Sync Return</button>
         </div>
@@ -115,6 +115,9 @@
         </div>
         <div class="button-group">
             <button id="syncZone">Sync Zone</button>
+        </div>
+        <div class="button-group">
+            <button id="syncCart">Sync Cart</button>
         </div>
         <div id="status" class="status"></div>
     </div>
@@ -163,6 +166,7 @@
         document.getElementById('syncCustomer').addEventListener('click', () => syncData('customer'));
         document.getElementById('syncCustomerOther').addEventListener('click', () => syncData('customer-other'));
         document.getElementById('syncZone').addEventListener('click', () => syncData('zone'));
+        document.getElementById('syncCart').addEventListener('click', () => syncData('cart'));
     </script>
 </body>
-</html> 
+</html>
