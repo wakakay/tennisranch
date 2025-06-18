@@ -6,8 +6,8 @@ const bannerController = require('../controllers/BannerController');
 const CustomerOtherController = require('../controllers/CustomerOtherController');
 const ZoneController = require('../controllers/ZoneController');
 const CartController = require('../controllers/CartController');
-const NewCustomerCouponSync = require('../services/NewCustomerCouponSync');
-const ZoneSync = require('../services/ZoneSync');
+const InformationController = require('../controllers/InformationController');
+const GoogleBaseController = require('../controllers/GoogleBaseController');
 const logger = require('../utils/logger');
 
 /**
@@ -111,5 +111,17 @@ router.post('/zone', ZoneController.sync);
  * @route POST /api/sync/cart
  */
 router.post('/cart', CartController.sync);
+
+/**
+ * 同步Information数据
+ * @route POST /api/sync/information
+ */
+router.post('/information', InformationController.sync);
+
+/**
+ * 同步Google Base数据
+ * @route POST /api/sync/google-base
+ */
+router.post('/google-base', GoogleBaseController.sync);
 
 module.exports = router;

@@ -105,6 +105,9 @@
             <button id="syncBanner">Sync Banner</button>
         </div>
         <div class="button-group">
+            <button id="syncInformation">Sync Information</button>
+        </div>
+        <div class="button-group">
             <button id="syncCustomer" class="sync-button">Sync customer and address</button>
             <button id="syncCustomerOther" class="sync-button">Sync other customer</button>
         </div>
@@ -118,6 +121,9 @@
         </div>
         <div class="button-group">
             <button id="syncCart">Sync Cart</button>
+        </div>
+        <div class="button-group">
+            <button id="syncGoogleBase">Sync Google Base</button>
         </div>
         <div id="status" class="status"></div>
     </div>
@@ -163,10 +169,12 @@
         document.getElementById('syncReturn').addEventListener('click', () => syncData('return'));
         document.getElementById('syncReview').addEventListener('click', () => syncData('review'));
         document.getElementById('syncBanner').addEventListener('click', () => syncData('banner'));
+        document.getElementById('syncInformation').addEventListener('click', () => syncData('information'));
         document.getElementById('syncCustomer').addEventListener('click', () => syncData('customer'));
         document.getElementById('syncCustomerOther').addEventListener('click', () => syncData('customer-other'));
         document.getElementById('syncZone').addEventListener('click', () => syncData('zone'));
         document.getElementById('syncCart').addEventListener('click', () => syncData('cart'));
+        document.getElementById('syncGoogleBase').addEventListener('click', () => syncData('google-base'));
     </script>
 </body>
 </html>
