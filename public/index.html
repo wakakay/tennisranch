@@ -125,6 +125,9 @@
         <div class="button-group">
             <button id="syncGoogleBase">Sync Google Base</button>
         </div>
+        <div class="button-group">
+            <button id="syncTag">Sync Tag</button>
+        </div>
         <div id="status" class="status"></div>
     </div>
 
@@ -175,6 +178,7 @@
         document.getElementById('syncZone').addEventListener('click', () => syncData('zone'));
         document.getElementById('syncCart').addEventListener('click', () => syncData('cart'));
         document.getElementById('syncGoogleBase').addEventListener('click', () => syncData('google-base'));
+        document.getElementById('syncTag').addEventListener('click', () => syncData('tag'));
     </script>
 </body>
 </html>

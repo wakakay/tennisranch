@@ -8,6 +8,7 @@ const ZoneController = require('../controllers/ZoneController');
 const CartController = require('../controllers/CartController');
 const InformationController = require('../controllers/InformationController');
 const GoogleBaseController = require('../controllers/GoogleBaseController');
+const TagController = require('../controllers/TagController');
 const logger = require('../utils/logger');
 
 /**
@@ -105,6 +106,12 @@ router.post('/customer-other', CustomerOtherController.sync);
  * @route POST /api/sync/zone-sync
  */
 router.post('/zone', ZoneController.sync);
+
+/**
+ * 同步Tag数据
+ * @route POST /api/sync/tag
+ */
+router.post('/tag', TagController.sync);
 
 /**
  * 同步购物车数据
