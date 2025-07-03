@@ -75,58 +75,63 @@
 <body>
     <div class="container">
         <h1></h1>
-        <div class="button-group">
-            <button id="syncCategory">Sync Category</button>
+        <div style="display:none">
+            <div class="button-group">
+                <button id="syncCategory">Sync Category</button>
+            </div>
+            <div class="button-group">
+                <button id="syncSeo">Sync SEO</button>
+            </div>
+            <div class="button-group">
+                <button id="syncOption">Sync Option</button>
+                <button id="syncOptionExtended">Sync Option Extended field</button>
+            </div>
+            <div class="button-group">
+                <button id="syncFilter">Sync Filter</button>
+            </div>
+            <div class="button-group">
+                <button id="syncManufacturer">Sync Manufacturer</button>
+            </div>
+            <div class="button-group">
+                <button id="syncProduct">Sync Product</button>
+                <button id="syncClearProductOption">Sync clear Product Option value invalid data</button>
+            </div>
+            <div class="button-group">
+                <button id="syncReturn">Sync Return</button>
+            </div>
+            <div class="button-group">
+                <button id="syncReview">Sync Review</button>
+            </div>
+            <div class="button-group">
+                <button id="syncBanner">Sync Banner</button>
+            </div>
+            <div class="button-group">
+                <button id="syncInformation">Sync Information</button>
+            </div>
+            <div class="button-group">
+                <button id="syncCustomer" class="sync-button">Sync customer and address</button>
+                <button id="syncCustomerOther" class="sync-button">Sync other customer</button>
+            </div>
+            <div class="button-group">
+                <button id="syncCoupon">Sync Coupon</button>
+                <button id="createNewCustomerCouponTables">Create New Customer Coupon</button>
+                <button id="syncNewCustomerCoupon">Sync New Customer Coupon</button>
+            </div>
+            <div class="button-group">
+                <button id="syncZone">Sync Zone</button>
+            </div>
+            <div class="button-group">
+                <button id="syncCart">Sync Cart</button>
+            </div>
+            <div class="button-group">
+                <button id="syncGoogleBase">Sync Google Base</button>
+            </div>
+            <div class="button-group">
+                <button id="syncTag">Sync Tag</button>
+            </div>
         </div>
         <div class="button-group">
-            <button id="syncSeo">Sync SEO</button>
-        </div>
-        <div class="button-group">
-            <button id="syncOption">Sync Option</button>
-            <button id="syncOptionExtended">Sync Option Extended field</button>
-        </div>
-        <div class="button-group">
-            <button id="syncFilter">Sync Filter</button>
-        </div>
-        <div class="button-group">
-            <button id="syncManufacturer">Sync Manufacturer</button>
-        </div>
-        <div class="button-group">
-            <button id="syncProduct">Sync Product</button>
-            <button id="syncClearProductOption">Sync clear Product Option value invalid data</button>
-        </div>
-        <div class="button-group">
-            <button id="syncReturn">Sync Return</button>
-        </div>
-        <div class="button-group">
-            <button id="syncReview">Sync Review</button>
-        </div>
-        <div class="button-group">
-            <button id="syncBanner">Sync Banner</button>
-        </div>
-        <div class="button-group">
-            <button id="syncInformation">Sync Information</button>
-        </div>
-        <div class="button-group">
-            <button id="syncCustomer" class="sync-button">Sync customer and address</button>
-            <button id="syncCustomerOther" class="sync-button">Sync other customer</button>
-        </div>
-        <div class="button-group">
-            <button id="syncCoupon">Sync Coupon</button>
-            <button id="createNewCustomerCouponTables">Create New Customer Coupon</button>
-            <button id="syncNewCustomerCoupon">Sync New Customer Coupon</button>
-        </div>
-        <div class="button-group">
-            <button id="syncZone">Sync Zone</button>
-        </div>
-        <div class="button-group">
-            <button id="syncCart">Sync Cart</button>
-        </div>
-        <div class="button-group">
-            <button id="syncGoogleBase">Sync Google Base</button>
-        </div>
-        <div class="button-group">
-            <button id="syncTag">Sync Tag</button>
+            <button id="syncBlog">Sync Blog</button>
         </div>
         <div id="status" class="status"></div>
     </div>
@@ -179,6 +184,7 @@
         document.getElementById('syncCart').addEventListener('click', () => syncData('cart'));
         document.getElementById('syncGoogleBase').addEventListener('click', () => syncData('google-base'));
         document.getElementById('syncTag').addEventListener('click', () => syncData('tag'));
+        document.getElementById('syncBlog').addEventListener('click', () => syncData('blog'));
     </script>
 </body>
 </html>

@@ -5,10 +5,11 @@ const ProductController = require('../controllers/ProductController');
 const bannerController = require('../controllers/BannerController');
 const CustomerOtherController = require('../controllers/CustomerOtherController');
 const ZoneController = require('../controllers/ZoneController');
+const TagController = require('../controllers/TagController');
 const CartController = require('../controllers/CartController');
 const InformationController = require('../controllers/InformationController');
 const GoogleBaseController = require('../controllers/GoogleBaseController');
-const TagController = require('../controllers/TagController');
+const BlogController = require('../controllers/BlogController');
 const logger = require('../utils/logger');
 
 /**
@@ -130,5 +131,11 @@ router.post('/information', InformationController.sync);
  * @route POST /api/sync/google-base
  */
 router.post('/google-base', GoogleBaseController.sync);
+
+/**
+ * 同步博客数据
+ * @route POST /api/sync/blog
+ */
+router.post('/blog', BlogController.sync);
 
 module.exports = router;
