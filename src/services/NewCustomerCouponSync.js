@@ -8,12 +8,12 @@ class NewCustomerCouponSync {
    */
   async createTables() {
     const conn = await targetPool.getConnection();
-    
+
     try {
       await conn.beginTransaction();
-      
+
       logger.info('开始创建新客户优惠券表...');
-      
+
       // 创建 oc_new_customer_coupon 表
       await conn.query(`
         CREATE TABLE IF NOT EXISTS oc_new_customer_coupon (
@@ -75,7 +75,7 @@ class NewCustomerCouponSync {
 
       await conn.commit();
       logger.info('新客户优惠券表创建完成');
-      
+
     } catch (error) {
       await conn.rollback();
       logger.error('创建新客户优惠券表失败:', error);
@@ -87,7 +87,7 @@ class NewCustomerCouponSync {
         sqlMessage: error.sqlMessage
       });
       throw error;
-      
+
     } finally {
       conn.release();
     }
@@ -107,7 +107,7 @@ class NewCustomerCouponSync {
         WHERE table_schema = 'tennisranch_2x_t' 
         AND table_name = ?
       `, [tableName]);
-      
+
       return rows[0].count > 0;
     } catch (error) {
       logger.error(`验证表 ${tableName} 结构失败:`, error);
@@ -122,12 +122,12 @@ class NewCustomerCouponSync {
   async syncNewCustomerCoupon() {
     const sourceConn = await sourcePool.getConnection();
     const targetConn = await targetPool.getConnection();
-    
+
     try {
       await targetConn.beginTransaction();
-      
+
       logger.info('开始同步新客户优惠券数据...');
-      
+
       // 验证源数据库表结构
       const tables = [
         'new_customer_coupon',
@@ -142,7 +142,7 @@ class NewCustomerCouponSync {
           throw new Error(`源数据库表 ${table} 不存在`);
         }
       }
-      
+
       // 清空目标表
       logger.info('清空目标表...');
       await targetConn.query('DELETE FROM tennisranch_4x.oc_new_customer_coupon');
@@ -150,7 +150,7 @@ class NewCustomerCouponSync {
       await targetConn.query('DELETE FROM tennisranch_4x.oc_new_customer_coupon_category');
       await targetConn.query('DELETE FROM tennisranch_4x.oc_new_customer_coupon_history');
       logger.info('目标表清空完成');
-      
+
       // 同步 new_customer_coupon 表
       logger.info('开始同步 new_customer_coupon 表...');
       const [coupons] = await sourceConn.query(`
@@ -158,7 +158,7 @@ class NewCustomerCouponSync {
           coupon_id, name, code, type, discount, logged, shipping, total, 
           date_start, date_end, uses_total, uses_customer, status, date_added,
           is_special_product, is_include
-        FROM tennisranch_2x_t.new_customer_coupon
+        FROM new_customer_coupon
       `);
       logger.info(`从源数据库读取到 ${coupons.length} 条新客户优惠券数据`);
 
@@ -178,7 +178,7 @@ class NewCustomerCouponSync {
       const [couponProducts] = await sourceConn.query(`
         SELECT 
           coupon_product_id, coupon_id, product_id
-        FROM tennisranch_2x_t.new_customer_coupon_product
+        FROM new_customer_coupon_product
       `);
       logger.info(`从源数据库读取到 ${couponProducts.length} 条新客户优惠券产品关联数据`);
 
@@ -196,7 +196,7 @@ class NewCustomerCouponSync {
       const [couponCategories] = await sourceConn.query(`
         SELECT 
           coupon_id, category_id
-        FROM tennisranch_2x_t.new_customer_coupon_category
+        FROM new_customer_coupon_category
       `);
       logger.info(`从源数据库读取到 ${couponCategories.length} 条新客户优惠券分类关联数据`);
 
@@ -215,7 +215,7 @@ class NewCustomerCouponSync {
         SELECT 
           coupon_history_id, coupon_id, order_id, customer_id, 
           amount, date_added
-        FROM tennisranch_2x_t.new_customer_coupon_history
+        FROM new_customer_coupon_history
       `);
       logger.info(`从源数据库读取到 ${couponHistories.length} 条新客户优惠券使用历史数据`);
 
@@ -231,7 +231,7 @@ class NewCustomerCouponSync {
 
       await targetConn.commit();
       logger.info('新客户优惠券数据同步完成');
-      
+
     } catch (error) {
       await targetConn.rollback();
       logger.error('新客户优惠券数据同步失败:', error);
@@ -244,7 +244,7 @@ class NewCustomerCouponSync {
         sql: error.sql
       });
       throw error;
-      
+
     } finally {
       sourceConn.release();
       targetConn.release();
@@ -252,4 +252,4 @@ class NewCustomerCouponSync {
   }
 }
 
-module.exports = new NewCustomerCouponSync(); 
+module.exports = new NewCustomerCouponSync();

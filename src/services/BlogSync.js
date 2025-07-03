@@ -31,7 +31,7 @@ class BlogSync {
       const [blogs] = await sourceConn.query(`
         SELECT 
           blog_id, sort_order, status
-        FROM tennisranch_2x_t.blog
+        FROM blog
       `);
       logger.info(`从源数据库读取到 ${blogs.length} 条博客数据`);
 
@@ -61,7 +61,7 @@ class BlogSync {
         SELECT 
           blog_id, tag_id, title, sub_title, image, category_id, 
           description, meta_title, meta_description, meta_keyword
-        FROM tennisranch_2x_t.blog_description
+        FROM blog_description
       `);
       logger.info(`从源数据库读取到 ${blogDescriptions.length} 条博客描述数据`);
 
@@ -92,7 +92,7 @@ class BlogSync {
       const [blogToLayouts] = await sourceConn.query(`
         SELECT 
           blog_id, store_id, layout_id
-        FROM tennisranch_2x_t.blog_to_layout
+        FROM blog_to_layout
       `);
       logger.info(`从源数据库读取到 ${blogToLayouts.length} 条博客布局关联数据`);
 
@@ -114,7 +114,7 @@ class BlogSync {
       const [blogToStores] = await sourceConn.query(`
         SELECT 
           blog_id, store_id
-        FROM tennisranch_2x_t.blog_to_store
+        FROM blog_to_store
       `);
       logger.info(`从源数据库读取到 ${blogToStores.length} 条博客商店关联数据`);
 

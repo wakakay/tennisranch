@@ -44,7 +44,7 @@ class TagSync {
       await targetConn.query('DELETE FROM tennisranch_4x.oc_tag');
       logger.info('目标库tag表清空完成');
       logger.info('读取源库tag数据...');
-      const [tags] = await sourceConn.query('SELECT tag_id, name, status FROM tennisranch_2x_t.tag');
+      const [tags] = await sourceConn.query('SELECT tag_id, name, status FROM tag');
       logger.info(`读取到${tags.length}条tag数据`);
       if (tags.length > 0) {
         await targetConn.query(
@@ -68,4 +68,4 @@ class TagSync {
   }
 }
 
-module.exports = new TagSync(); 
+module.exports = new TagSync();

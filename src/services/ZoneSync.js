@@ -1,4 +1,4 @@
-const { sourcePool, targetPool } = require('../config/database');
+const { sourceConfig, sourcePool, targetPool } = require('../config/database');
 const logger = require('../utils/logger');
 
 class ZoneSync {
@@ -8,12 +8,12 @@ class ZoneSync {
    */
   async createTables() {
     const conn = await targetPool.getConnection();
-    
+
     try {
       await conn.beginTransaction();
-      
+
       logger.info('开始创建区域相关表...');
-      
+
       // 创建 oc_zone 表
       await conn.query(`
         CREATE TABLE IF NOT EXISTS oc_zone (
@@ -52,7 +52,7 @@ class ZoneSync {
 
       await conn.commit();
       logger.info('区域相关表创建完成');
-      
+
     } catch (error) {
       await conn.rollback();
       logger.error('创建区域相关表失败:', error);
@@ -64,7 +64,7 @@ class ZoneSync {
         sqlMessage: error.sqlMessage
       });
       throw error;
-      
+
     } finally {
       conn.release();
     }
@@ -81,13 +81,13 @@ class ZoneSync {
       const [rows] = await conn.query(`
         SELECT COUNT(*) as count 
         FROM information_schema.tables 
-        WHERE table_schema = 'tennisranch_2x_t' 
+        WHERE table_schema = '${sourceConfig.database}'
         AND table_name = ?
       `, [tableName]);
-      
+
       return rows[0].count > 0;
     } catch (error) {
-      logger.error(`验证表 ${tableName} 结构失败:`, error);
+      logger.error(`验证表 ${sourceConfig.database} ${tableName} 结构失败:`, error);
       return false;
     }
   }
@@ -99,12 +99,12 @@ class ZoneSync {
   async syncZone() {
     const sourceConn = await sourcePool.getConnection();
     const targetConn = await targetPool.getConnection();
-    
+
     try {
       await targetConn.beginTransaction();
-      
+
       logger.info('开始同步区域数据...');
-      
+
       // 验证源数据库表结构
       const tables = ['zone', 'zone_to_geo_zone'];
       for (const table of tables) {
@@ -113,20 +113,20 @@ class ZoneSync {
           throw new Error(`源数据库表 ${table} 不存在`);
         }
       }
-      
+
       // 清空目标表
       logger.info('清空目标表...');
       await targetConn.query('DELETE FROM tennisranch_4x.oc_zone');
       await targetConn.query('DELETE FROM tennisranch_4x.oc_zone_description');
       await targetConn.query('DELETE FROM tennisranch_4x.oc_zone_to_geo_zone');
       logger.info('目标表清空完成');
-      
+
       // 同步 zone 表到 oc_zone
       logger.info('开始同步 zone 表到 oc_zone...');
       const [zones] = await sourceConn.query(`
         SELECT 
           zone_id, country_id, code, status
-        FROM tennisranch_2x_t.zone
+        FROM zone
       `);
       logger.info(`从源数据库读取到 ${zones.length} 条区域数据`);
 
@@ -144,7 +144,7 @@ class ZoneSync {
       const [zoneDescriptions] = await sourceConn.query(`
         SELECT 
           zone_id, name
-        FROM tennisranch_2x_t.zone
+        FROM zone
       `);
       logger.info(`从源数据库读取到 ${zoneDescriptions.length} 条区域描述数据`);
 
@@ -162,7 +162,7 @@ class ZoneSync {
       const [zoneToGeoZones] = await sourceConn.query(`
         SELECT 
           zone_to_geo_zone_id, geo_zone_id, country_id, zone_id
-        FROM tennisranch_2x_t.zone_to_geo_zone
+        FROM zone_to_geo_zone
       `);
       logger.info(`从源数据库读取到 ${zoneToGeoZones.length} 条区域地理区域关联数据`);
 
@@ -177,7 +177,7 @@ class ZoneSync {
 
       await targetConn.commit();
       logger.info('区域数据同步完成');
-      
+
     } catch (error) {
       await targetConn.rollback();
       logger.error('区域数据同步失败:', error);
@@ -190,7 +190,7 @@ class ZoneSync {
         sql: error.sql
       });
       throw error;
-      
+
     } finally {
       sourceConn.release();
       targetConn.release();
@@ -198,4 +198,4 @@ class ZoneSync {
   }
 }
 
-module.exports = new ZoneSync(); 
+module.exports = new ZoneSync();

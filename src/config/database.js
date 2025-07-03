@@ -7,9 +7,9 @@ const logger = require('../utils/logger');
 const sourceConfig = {
   host: '8.219.238.63',
   port: 3306,
-  user: 'tennisranch_2x_t',
+  user: 'tennisranch_3x',
   password: 'YwxAa4Pb7jWd5jGe',
-  database: 'tennisranch_2x_t',
+  database: 'tennisranch_3x',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
@@ -52,18 +52,18 @@ const targetPool = createPool(targetConfig);
 async function testConnection() {
   let sourceConn;
   let targetConn;
-  
+
   try {
     // 测试源数据库连接
     sourceConn = await sourcePool.getConnection();
     await sourceConn.query('SELECT 1');
     logger.info('源数据库连接成功');
-    
+
     // 测试目标数据库连接
     targetConn = await targetPool.getConnection();
     await targetConn.query('SELECT 1');
     logger.info('目标数据库连接成功');
-    
+
   } catch (error) {
     logger.error('数据库连接测试失败:', error);
     throw error;
@@ -74,7 +74,9 @@ async function testConnection() {
 }
 
 module.exports = {
+  sourceConfig,
+  targetConfig,
   sourcePool,
   targetPool,
   testConnection
-}; 
+};

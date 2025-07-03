@@ -12,21 +12,21 @@ class CartSync {
   async syncCart() {
     const sourceConn = await sourcePool.getConnection();
     const targetConn = await targetPool.getConnection();
-    
+
     try {
       await targetConn.beginTransaction();
-      
+
       // 清空目标表
       logger.info('清空目标表...');
       await targetConn.query('DELETE FROM tennisranch_4x.oc_cart');
       logger.info('目标表清空完成');
-      
+
       // 同步 cart 表到 oc_cart
       logger.info('开始同步 cart 表到 oc_cart...');
       const [carts] = await sourceConn.query(`
         SELECT 
           cart_id, customer_id, session_id, product_id, \`option\`, quantity, date_added, recurring_id
-        FROM tennisranch_2x_t.cart
+        FROM cart
       `);
       logger.info(`从源数据库读取到 ${carts.length} 条购物车数据`);
 
@@ -45,7 +45,7 @@ class CartSync {
           cart.recurring_id, // subscription_plan_id = recurring_id
           cart.date_added
         ]);
-        
+
         await targetConn.query(`
           INSERT INTO tennisranch_4x.oc_cart (
             cart_id, customer_id, session_id, product_id, \`option\`, quantity, 
@@ -57,7 +57,7 @@ class CartSync {
 
       await targetConn.commit();
       logger.info('购物车数据同步完成');
-      
+
     } catch (error) {
       await targetConn.rollback();
       logger.error('购物车数据同步失败:', error);

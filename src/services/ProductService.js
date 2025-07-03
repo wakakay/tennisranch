@@ -28,10 +28,10 @@ class ProductService {
             try {
                 // 1. 同步基础表
                 await this.syncBaseTables(sourceConn, targetConn);
-                
+
                 // 2. 同步特殊表
                 await this.syncSpecialTables(sourceConn, targetConn);
-                
+
                 // 3. 同步关联表
                 await this.syncRelatedTables(sourceConn, targetConn);
 
@@ -45,7 +45,15 @@ class ProductService {
                 throw error;
             }
         } catch (error) {
-            logger.error('产品数据同步失败:', error);
+            // 改进错误日志记录，确保捕获完整的错误信息
+            logger.error('产品数据同步失败:', {
+                message: error.message,
+                stack: error.stack,
+                code: error.code,
+                errno: error.errno,
+                sqlState: error.sqlState,
+                sqlMessage: error.sqlMessage
+            });
             throw error;
         } finally {
             // 释放数据库连接
@@ -83,7 +91,7 @@ class ProductService {
         // 3. 构造批量插入SQL（排除 viewed 字段）
         const fields = Object.keys(rows[0]).filter(f => f !== 'viewed');
         const values = rows.map(row => fields.map(f => row[f]));
-        
+
         // 4. 清空并批量插入目标库
         await targetConn.query('TRUNCATE TABLE oc_product');
         const sql = `INSERT INTO oc_product (${fields.join(',')}) VALUES ?`;
@@ -156,7 +164,7 @@ class ProductService {
             logger.info(`正在同步 ${table.source} 表...`);
             // 清空目标表
             await targetConn.query(`TRUNCATE TABLE ${table.target}`);
-            
+
             const [rows] = await sourceConn.query(`SELECT * FROM ${table.source}`);
             if (!rows.length) {
                 logger.info(`源库 ${table.source} 无数据`);
@@ -203,4 +211,4 @@ class ProductService {
     }
 }
 
-module.exports = ProductService; 
+module.exports = ProductService;

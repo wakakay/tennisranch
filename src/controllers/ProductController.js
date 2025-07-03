@@ -14,6 +14,7 @@ class ProductController {
      */
     static async syncProduct(req, res) {
         try {
+            // 修改为实例方法调用
             const result = await ProductSync.syncProduct();
             res.json({
                 success: true,
@@ -21,7 +22,15 @@ class ProductController {
                 data: result
             });
         } catch (error) {
-            logger.error('产品数据同步失败:', error);
+            // 改进错误日志记录
+            logger.error('产品数据同步失败:', {
+                message: error.message,
+                stack: error.stack,
+                code: error.code,
+                errno: error.errno,
+                sqlState: error.sqlState,
+                sqlMessage: error.sqlMessage
+            });
             res.status(500).json({
                 success: false,
                 message: '产品数据同步失败',
@@ -91,4 +100,4 @@ class ProductController {
     }
 }
 
-module.exports = ProductController; 
+module.exports = ProductController;
