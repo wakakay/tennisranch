@@ -14,9 +14,9 @@ class ZoneSync {
 
       logger.info('开始创建区域相关表...');
 
-      // 创建 oc_zone 表
+      // 创建 zone 表
       await conn.query(`
-        CREATE TABLE IF NOT EXISTS oc_zone (
+        CREATE TABLE IF NOT EXISTS zone (
           zone_id int(11) NOT NULL AUTO_INCREMENT,
           country_id int(11) DEFAULT NULL,
           code varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -24,11 +24,11 @@ class ZoneSync {
           PRIMARY KEY (zone_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
       `);
-      logger.info('创建 oc_zone 表完成');
+      logger.info('创建 zone 表完成');
 
-      // 创建 oc_zone_description 表
+      // 创建 zone_description 表
       await conn.query(`
-        CREATE TABLE IF NOT EXISTS oc_zone_description (
+        CREATE TABLE IF NOT EXISTS zone_description (
           zone_id int(11) NOT NULL,
           language_id int(11) NOT NULL,
           name varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -36,11 +36,11 @@ class ZoneSync {
           KEY name (name)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
       `);
-      logger.info('创建 oc_zone_description 表完成');
+      logger.info('创建 zone_description 表完成');
 
-      // 创建 oc_zone_to_geo_zone 表
+      // 创建 zone_to_geo_zone 表
       await conn.query(`
-        CREATE TABLE IF NOT EXISTS oc_zone_to_geo_zone (
+        CREATE TABLE IF NOT EXISTS zone_to_geo_zone (
           zone_to_geo_zone_id int(11) NOT NULL AUTO_INCREMENT,
           geo_zone_id int(11) DEFAULT NULL,
           country_id int(11) DEFAULT NULL,
@@ -48,7 +48,7 @@ class ZoneSync {
           PRIMARY KEY (zone_to_geo_zone_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
       `);
-      logger.info('创建 oc_zone_to_geo_zone 表完成');
+      logger.info('创建 zone_to_geo_zone 表完成');
 
       await conn.commit();
       logger.info('区域相关表创建完成');
@@ -116,13 +116,13 @@ class ZoneSync {
 
       // 清空目标表
       logger.info('清空目标表...');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_zone');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_zone_description');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_zone_to_geo_zone');
+      await targetConn.query('DELETE FROM tennisranch_4x.zone');
+      await targetConn.query('DELETE FROM tennisranch_4x.zone_description');
+      await targetConn.query('DELETE FROM tennisranch_4x.zone_to_geo_zone');
       logger.info('目标表清空完成');
 
-      // 同步 zone 表到 oc_zone
-      logger.info('开始同步 zone 表到 oc_zone...');
+      // 同步 zone 表到 zone
+      logger.info('开始同步 zone 表到 zone...');
       const [zones] = await sourceConn.query(`
         SELECT 
           zone_id, country_id, code, status
@@ -132,15 +132,15 @@ class ZoneSync {
 
       if (zones.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_zone (
+          INSERT INTO tennisranch_4x.zone (
             zone_id, country_id, code, status
           ) VALUES ?
         `, [zones.map(zone => Object.values(zone))]);
-        logger.info('oc_zone 表同步完成');
+        logger.info('zone 表同步完成');
       }
 
-      // 同步 zone 表的 name 到 oc_zone_description
-      logger.info('开始同步 zone 表的 name 到 oc_zone_description...');
+      // 同步 zone 表的 name 到 zone_description
+      logger.info('开始同步 zone 表的 name 到 zone_description...');
       const [zoneDescriptions] = await sourceConn.query(`
         SELECT 
           zone_id, name
@@ -150,15 +150,15 @@ class ZoneSync {
 
       if (zoneDescriptions.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_zone_description (
+          INSERT INTO tennisranch_4x.zone_description (
             zone_id, language_id, name
           ) VALUES ?
         `, [zoneDescriptions.map(desc => [desc.zone_id, 1, desc.name])]);
-        logger.info('oc_zone_description 表同步完成');
+        logger.info('zone_description 表同步完成');
       }
 
-      // 同步 zone_to_geo_zone 表到 oc_zone_to_geo_zone
-      logger.info('开始同步 zone_to_geo_zone 表到 oc_zone_to_geo_zone...');
+      // 同步 zone_to_geo_zone 表到 zone_to_geo_zone
+      logger.info('开始同步 zone_to_geo_zone 表到 zone_to_geo_zone...');
       const [zoneToGeoZones] = await sourceConn.query(`
         SELECT 
           zone_to_geo_zone_id, geo_zone_id, country_id, zone_id
@@ -168,11 +168,11 @@ class ZoneSync {
 
       if (zoneToGeoZones.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_zone_to_geo_zone (
+          INSERT INTO tennisranch_4x.zone_to_geo_zone (
             zone_to_geo_zone_id, geo_zone_id, country_id, zone_id
           ) VALUES ?
         `, [zoneToGeoZones.map(zone => Object.values(zone))]);
-        logger.info('oc_zone_to_geo_zone 表同步完成');
+        logger.info('zone_to_geo_zone 表同步完成');
       }
 
       await targetConn.commit();

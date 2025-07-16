@@ -17,10 +17,10 @@ class CouponSync {
 
       // 清空目标表
       logger.info('清空目标表...');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_coupon');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_coupon_product');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_coupon_category');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_coupon_history');
+      await targetConn.query('DELETE FROM tennisranch_4x.coupon');
+      await targetConn.query('DELETE FROM tennisranch_4x.coupon_product');
+      await targetConn.query('DELETE FROM tennisranch_4x.coupon_category');
+      await targetConn.query('DELETE FROM tennisranch_4x.coupon_history');
       logger.info('目标表清空完成');
 
       // 同步 coupon 表
@@ -36,7 +36,7 @@ class CouponSync {
 
       if (coupons.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_coupon (
+          INSERT INTO tennisranch_4x.coupon (
             coupon_id, name, code, type, discount, logged, shipping, total, 
             date_start, date_end, uses_total, uses_customer, status, date_added,
             is_special_product, is_include
@@ -56,7 +56,7 @@ class CouponSync {
 
       if (couponProducts.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_coupon_product (
+          INSERT INTO tennisranch_4x.coupon_product (
             coupon_product_id, coupon_id, product_id
           ) VALUES ?
         `, [couponProducts.map(product => Object.values(product))]);
@@ -74,7 +74,7 @@ class CouponSync {
 
       if (couponCategories.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_coupon_category (
+          INSERT INTO tennisranch_4x.coupon_category (
             coupon_id, category_id
           ) VALUES ?
         `, [couponCategories.map(category => Object.values(category))]);
@@ -93,7 +93,7 @@ class CouponSync {
 
       if (couponHistories.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_coupon_history (
+          INSERT INTO tennisranch_4x.coupon_history (
             coupon_history_id, coupon_id, order_id, customer_id, 
             amount, date_added
           ) VALUES ?

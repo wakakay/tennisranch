@@ -63,7 +63,7 @@ async function syncCategory() {
  */
 async function syncMainCategory(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_category');
+    await targetConnection.query('TRUNCATE TABLE category');
 
     // 获取源数据
     const [categories] = await sourceConnection.query('SELECT * FROM category');
@@ -79,7 +79,7 @@ async function syncMainCategory(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_category (category_id, image, parent_id, sort_order, status) VALUES ?',
+            'INSERT INTO category (category_id, image, parent_id, sort_order, status) VALUES ?',
             [values]
         );
     }
@@ -94,7 +94,7 @@ async function syncMainCategory(sourceConnection, targetConnection) {
  */
 async function syncCategoryDescription(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_category_description');
+    await targetConnection.query('TRUNCATE TABLE category_description');
 
     // 获取源数据
     const [descriptions] = await sourceConnection.query('SELECT * FROM category_description');
@@ -112,7 +112,7 @@ async function syncCategoryDescription(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_category_description (category_id, language_id, name, description, meta_title, meta_description, meta_keyword) VALUES ?',
+            'INSERT INTO category_description (category_id, language_id, name, description, meta_title, meta_description, meta_keyword) VALUES ?',
             [values]
         );
     }
@@ -127,7 +127,7 @@ async function syncCategoryDescription(sourceConnection, targetConnection) {
  */
 async function syncCategoryFilter(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_category_filter');
+    await targetConnection.query('TRUNCATE TABLE category_filter');
 
     // 获取源数据
     const [filters] = await sourceConnection.query('SELECT * FROM category_filter');
@@ -140,7 +140,7 @@ async function syncCategoryFilter(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_category_filter (category_id, filter_id) VALUES ?',
+            'INSERT INTO category_filter (category_id, filter_id) VALUES ?',
             [values]
         );
     }
@@ -155,7 +155,7 @@ async function syncCategoryFilter(sourceConnection, targetConnection) {
  */
 async function syncCategoryPath(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_category_path');
+    await targetConnection.query('TRUNCATE TABLE category_path');
 
     // 获取源数据
     const [paths] = await sourceConnection.query('SELECT * FROM category_path');
@@ -169,7 +169,7 @@ async function syncCategoryPath(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_category_path (category_id, path_id, level) VALUES ?',
+            'INSERT INTO category_path (category_id, path_id, level) VALUES ?',
             [values]
         );
     }
@@ -184,7 +184,7 @@ async function syncCategoryPath(sourceConnection, targetConnection) {
  */
 async function syncCategoryToLayout(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_category_to_layout');
+    await targetConnection.query('TRUNCATE TABLE category_to_layout');
 
     // 获取源数据
     const [layouts] = await sourceConnection.query('SELECT * FROM category_to_layout');
@@ -198,7 +198,7 @@ async function syncCategoryToLayout(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_category_to_layout (category_id, store_id, layout_id) VALUES ?',
+            'INSERT INTO category_to_layout (category_id, store_id, layout_id) VALUES ?',
             [values]
         );
     }
@@ -213,7 +213,7 @@ async function syncCategoryToLayout(sourceConnection, targetConnection) {
  */
 async function syncCategoryToStore(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_category_to_store');
+    await targetConnection.query('TRUNCATE TABLE category_to_store');
 
     // 获取源数据
     const [stores] = await sourceConnection.query('SELECT * FROM category_to_store');
@@ -226,7 +226,7 @@ async function syncCategoryToStore(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_category_to_store (category_id, store_id) VALUES ?',
+            'INSERT INTO category_to_store (category_id, store_id) VALUES ?',
             [values]
         );
     }
@@ -235,7 +235,7 @@ async function syncCategoryToStore(sourceConnection, targetConnection) {
 }
 
 /**
- * 同步SEO数据（url_alias -> oc_seo_url）
+ * 同步SEO数据（url_alias -> seo_url）
  * @returns {Promise<void>}
  */
 async function syncSeo() {
@@ -246,7 +246,7 @@ async function syncSeo() {
         targetConnection = await targetPool.getConnection();
         await targetConnection.beginTransaction();
         // 清空目标表
-        await targetConnection.query('TRUNCATE TABLE oc_seo_url');
+        await targetConnection.query('TRUNCATE TABLE seo_url');
         // 获取源数据
         const [rows] = await sourceConnection.query('SELECT * FROM url_alias');
         if (rows.length > 0) {
@@ -266,7 +266,7 @@ async function syncSeo() {
                 ];
             });
             await targetConnection.query(
-                'INSERT INTO oc_seo_url (seo_url_id, `key`, `value`, keyword, store_id, language_id, sort_order) VALUES ?',[values]
+                'INSERT INTO seo_url (seo_url_id, `key`, `value`, keyword, store_id, language_id, sort_order) VALUES ?',[values]
             );
         }
         await targetConnection.commit();
@@ -327,31 +327,31 @@ async function syncOptionExtended() {
         targetConnection = await targetPool.getConnection();
         await targetConnection.beginTransaction();
 
-        logger.info('开始修改 oc_option_description 表...');
-        // 1. 修改 oc_option_description 表，添加 related_children_option_id 字段
+        logger.info('开始修改 option_description 表...');
+        // 1. 修改 option_description 表，添加 related_children_option_id 字段
         await targetConnection.query(`
-            ALTER TABLE oc_option_description
+            ALTER TABLE option_description
             ADD COLUMN related_children_option_id int(11) DEFAULT NULL AFTER name
         `);
-        logger.info('oc_option_description 表修改成功');
+        logger.info('option_description 表修改成功');
 
-        logger.info('开始修改 oc_option_value 表...');
-        // 2. 修改 oc_option_value 表，添加 price_prefix, price, related_option_value_ids 字段
+        logger.info('开始修改 option_value 表...');
+        // 2. 修改 option_value 表，添加 price_prefix, price, related_option_value_ids 字段
         await targetConnection.query(`
-            ALTER TABLE oc_option_value
+            ALTER TABLE option_value
             ADD COLUMN price_prefix varchar(1) DEFAULT NULL AFTER option_id,
             ADD COLUMN price decimal(15,4) DEFAULT NULL AFTER price_prefix,
             ADD COLUMN related_option_value_ids text COLLATE utf8mb4_unicode_ci AFTER price
         `);
-        logger.info('oc_option_value 表修改成功');
+        logger.info('option_value 表修改成功');
 
-        logger.info('开始修改 oc_option_value_description 表...');
-        // 3. 修改 oc_option_value_description 表，添加 linkage_option_id 字段
+        logger.info('开始修改 option_value_description 表...');
+        // 3. 修改 option_value_description 表，添加 linkage_option_id 字段
         await targetConnection.query(`
-            ALTER TABLE oc_option_value_description
+            ALTER TABLE option_value_description
             ADD COLUMN linkage_option_id int(11) DEFAULT NULL AFTER name
         `);
-        logger.info('oc_option_value_description 表修改成功');
+        logger.info('option_value_description 表修改成功');
 
         await targetConnection.commit();
         logger.info('Option扩展字段同步完成');
@@ -377,7 +377,7 @@ async function syncOptionExtended() {
  */
 async function syncMainOption(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_option');
+    await targetConnection.query('TRUNCATE TABLE option');
     
     // 获取源数据
     const [rows] = await sourceConnection.query('SELECT * FROM `option`');
@@ -391,7 +391,7 @@ async function syncMainOption(sourceConnection, targetConnection) {
         ]);
         
         await targetConnection.query(
-            'INSERT INTO oc_option (option_id, type, validation, sort_order) VALUES ?',
+            'INSERT INTO option (option_id, type, validation, sort_order) VALUES ?',
             [values]
         );
     }
@@ -406,7 +406,7 @@ async function syncMainOption(sourceConnection, targetConnection) {
  */
 async function syncOptionDescription(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_option_description');
+    await targetConnection.query('TRUNCATE TABLE option_description');
     
     // 获取源数据
     const [rows] = await sourceConnection.query('SELECT * FROM `option_description`');
@@ -420,7 +420,7 @@ async function syncOptionDescription(sourceConnection, targetConnection) {
         ]);
         
         await targetConnection.query(
-            'INSERT INTO oc_option_description (option_id, language_id, name, related_children_option_id) VALUES ?',
+            'INSERT INTO option_description (option_id, language_id, name, related_children_option_id) VALUES ?',
             [values]
         );
     }
@@ -435,7 +435,7 @@ async function syncOptionDescription(sourceConnection, targetConnection) {
  */
 async function syncOptionValue(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_option_value');
+    await targetConnection.query('TRUNCATE TABLE option_value');
     
     // 获取源数据
     const [rows] = await sourceConnection.query('SELECT * FROM `option_value`');
@@ -452,7 +452,7 @@ async function syncOptionValue(sourceConnection, targetConnection) {
         ]);
         
         await targetConnection.query(
-            'INSERT INTO oc_option_value (option_value_id, option_id, price_prefix, price, related_option_value_ids, image, sort_order) VALUES ?',
+            'INSERT INTO option_value (option_value_id, option_id, price_prefix, price, related_option_value_ids, image, sort_order) VALUES ?',
             [values]
         );
     }
@@ -467,7 +467,7 @@ async function syncOptionValue(sourceConnection, targetConnection) {
  */
 async function syncOptionValueDescription(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_option_value_description');
+    await targetConnection.query('TRUNCATE TABLE option_value_description');
     
     // 获取源数据
     const [rows] = await sourceConnection.query('SELECT * FROM `option_value_description`');
@@ -482,7 +482,7 @@ async function syncOptionValueDescription(sourceConnection, targetConnection) {
         ]);
         
         await targetConnection.query(
-            'INSERT INTO oc_option_value_description (option_value_id, language_id, option_id, name, linkage_option_id) VALUES ?',
+            'INSERT INTO option_value_description (option_value_id, language_id, option_id, name, linkage_option_id) VALUES ?',
             [values]
         );
     }
@@ -550,7 +550,7 @@ async function syncAllFilters() {
  */
 async function syncFilterData(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_filter');
+    await targetConnection.query('TRUNCATE TABLE filter');
 
     // 获取源数据
     const [filters] = await sourceConnection.query('SELECT * FROM filter');
@@ -564,7 +564,7 @@ async function syncFilterData(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_filter (filter_id, filter_group_id, sort_order) VALUES ?',
+            'INSERT INTO filter (filter_id, filter_group_id, sort_order) VALUES ?',
             [values]
         );
     }
@@ -579,7 +579,7 @@ async function syncFilterData(sourceConnection, targetConnection) {
  */
 async function syncFilterGroup(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_filter_group');
+    await targetConnection.query('TRUNCATE TABLE filter_group');
 
     // 获取源数据
     const [groups] = await sourceConnection.query('SELECT * FROM filter_group');
@@ -592,7 +592,7 @@ async function syncFilterGroup(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_filter_group (filter_group_id, sort_order) VALUES ?',
+            'INSERT INTO filter_group (filter_group_id, sort_order) VALUES ?',
             [values]
         );
     }
@@ -607,7 +607,7 @@ async function syncFilterGroup(sourceConnection, targetConnection) {
  */
 async function syncFilterGroupDescription(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_filter_group_description');
+    await targetConnection.query('TRUNCATE TABLE filter_group_description');
 
     // 获取源数据
     const [descriptions] = await sourceConnection.query('SELECT * FROM filter_group_description');
@@ -621,7 +621,7 @@ async function syncFilterGroupDescription(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_filter_group_description (filter_group_id, language_id, name) VALUES ?',
+            'INSERT INTO filter_group_description (filter_group_id, language_id, name) VALUES ?',
             [values]
         );
     }
@@ -636,7 +636,7 @@ async function syncFilterGroupDescription(sourceConnection, targetConnection) {
  */
 async function syncFilterDescription(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_filter_description');
+    await targetConnection.query('TRUNCATE TABLE filter_description');
 
     // 获取源数据
     const [descriptions] = await sourceConnection.query('SELECT * FROM filter_description');
@@ -650,7 +650,7 @@ async function syncFilterDescription(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_filter_description (filter_id, language_id, name) VALUES ?',
+            'INSERT INTO filter_description (filter_id, language_id, name) VALUES ?',
             [values]
         );
     }
@@ -665,7 +665,7 @@ async function syncFilterDescription(sourceConnection, targetConnection) {
  */
 async function syncProductFilter(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_product_filter');
+    await targetConnection.query('TRUNCATE TABLE product_filter');
 
     // 获取源数据
     const [filters] = await sourceConnection.query('SELECT * FROM product_filter');
@@ -678,7 +678,7 @@ async function syncProductFilter(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_product_filter (product_id, filter_id) VALUES ?',
+            'INSERT INTO product_filter (product_id, filter_id) VALUES ?',
             [values]
         );
     }
@@ -734,7 +734,7 @@ async function syncManufacturer() {
  */
 async function syncManufacturerTable(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_manufacturer');
+    await targetConnection.query('TRUNCATE TABLE manufacturer');
 
     // 获取源数据
     const [manufacturers] = await sourceConnection.query('SELECT * FROM manufacturer');
@@ -749,7 +749,7 @@ async function syncManufacturerTable(sourceConnection, targetConnection) {
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_manufacturer (manufacturer_id, name, image, sort_order) VALUES ?',
+            'INSERT INTO manufacturer (manufacturer_id, name, image, sort_order) VALUES ?',
             [values]
         );
     }
@@ -764,7 +764,7 @@ async function syncManufacturerTable(sourceConnection, targetConnection) {
  */
 async function syncManufacturerToStoreTable(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE oc_manufacturer_to_store');
+    await targetConnection.query('TRUNCATE TABLE manufacturer_to_store');
 
     // 获取源数据
     const [stores] = await sourceConnection.query('SELECT * FROM manufacturer_to_store');
@@ -777,7 +777,7 @@ async function syncManufacturerToStoreTable(sourceConnection, targetConnection) 
         ]);
 
         await targetConnection.query(
-            'INSERT INTO oc_manufacturer_to_store (manufacturer_id, store_id) VALUES ?',
+            'INSERT INTO manufacturer_to_store (manufacturer_id, store_id) VALUES ?',
             [values]
         );
     }

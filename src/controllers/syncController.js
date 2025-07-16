@@ -4,6 +4,7 @@ const { sourcePool, targetPool } = require('../config/database');
 const ReturnSync = require('../services/ReturnSync');
 const ReviewSync = require('../services/ReviewSync');
 const CustomerSync = require('../services/CustomerSync');
+const RemoveOcPrefixService = require('../services/RemoveOcPrefixService');
 
 /**
  * 同步分类数据
@@ -18,10 +19,10 @@ async function syncCategory(req, res) {
         res.json({ success: true, message: '分类数据同步成功' });
     } catch (error) {
         logger.error('分类数据同步失败', error);
-        res.status(500).json({ 
-            success: false, 
+        res.status(500).json({
+            success: false,
             message: '分类数据同步失败',
-            error: error.message 
+            error: error.message
         });
     }
 }
@@ -216,9 +217,9 @@ async function syncReturn(req, res) {
         sourceConn = await sourcePool.getConnection();
         targetConn = await targetPool.getConnection();
         await targetConn.beginTransaction();
-        
+
         await ReturnSync.syncAll(sourceConn, targetConn);
-        
+
         await targetConn.commit();
         res.json({ success: true, message: '退货数据同步完成' });
     } catch (error) {
@@ -264,6 +265,33 @@ async function syncCustomer(req, res) {
   }
 }
 
+/**
+ * 去除目标数据库表名的oc_前缀
+ * @param {import('express').Request} req - 请求对象
+ * @param {import('express').Response} res - 响应对象
+ */
+async function removeOcPrefix(req, res) {
+    try {
+        logger.info('开始执行去除oc_前缀操作...');
+        const removeOcPrefixService = new RemoveOcPrefixService();
+        const result = await removeOcPrefixService.removeOcPrefix();
+
+        logger.success('oc_前缀移除操作完成');
+        res.json({
+            success: true,
+            message: 'oc_前缀移除操作完成',
+            data: result
+        });
+    } catch (error) {
+        logger.error('oc_前缀移除操作失败', error);
+        res.status(500).json({
+            success: false,
+            message: 'oc_前缀移除操作失败',
+            error: error.message
+        });
+    }
+}
+
 module.exports = {
     syncCategory,
     syncSeo,
@@ -274,5 +302,6 @@ module.exports = {
     syncTax,
     syncReturn,
     syncReview,
-    syncCustomer
-}; 
+    syncCustomer,
+    removeOcPrefix
+};

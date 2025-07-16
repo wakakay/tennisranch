@@ -43,11 +43,11 @@ class GoogleBaseSync {
    */
   async syncGoogleBaseCategory(sourceConn, targetConn) {
     // 清空目标表
-    logger.info('清空目标表 oc_google_base_category...');
-    await targetConn.query('DELETE FROM tennisranch_4x.oc_google_base_category');
+    logger.info('清空目标表 google_base_category...');
+    await targetConn.query('DELETE FROM tennisranch_4x.google_base_category');
 
     // 重置自增ID计数器
-    await targetConn.query('ALTER TABLE tennisranch_4x.oc_google_base_category AUTO_INCREMENT = 1');
+    await targetConn.query('ALTER TABLE tennisranch_4x.google_base_category AUTO_INCREMENT = 1');
 
     // 获取源数据
     logger.info('获取源表 google_base_category 数据...');
@@ -66,7 +66,7 @@ class GoogleBaseSync {
       ]);
 
       await targetConn.query(`
-        INSERT INTO tennisranch_4x.oc_google_base_category (
+        INSERT INTO tennisranch_4x.google_base_category (
           google_base_category_id, name
         ) VALUES ?
       `, [values]);
@@ -83,14 +83,14 @@ class GoogleBaseSync {
    */
   async syncGoogleBaseCategoryToCategory(sourceConn, targetConn) {
     // 清空目标表
-    logger.info('清空目标表 oc_google_base_category_to_category...');
-    await targetConn.query('DELETE FROM tennisranch_4x.oc_google_base_category_to_category');
+    logger.info('清空目标表 google_base_category_to_category...');
+    await targetConn.query('DELETE FROM tennisranch_4x.google_base_category_to_category');
 
     // 重置自增ID计数器（如果有自增ID）
-    const [columns] = await targetConn.query('SHOW COLUMNS FROM tennisranch_4x.oc_google_base_category_to_category');
+    const [columns] = await targetConn.query('SHOW COLUMNS FROM tennisranch_4x.google_base_category_to_category');
     const hasAutoIncrement = columns.some(col => col.Extra === 'auto_increment');
     if (hasAutoIncrement) {
-      await targetConn.query('ALTER TABLE tennisranch_4x.oc_google_base_category_to_category AUTO_INCREMENT = 1');
+      await targetConn.query('ALTER TABLE tennisranch_4x.google_base_category_to_category AUTO_INCREMENT = 1');
     }
 
     // 获取源数据
@@ -110,7 +110,7 @@ class GoogleBaseSync {
       ]);
 
       await targetConn.query(`
-        INSERT INTO tennisranch_4x.oc_google_base_category_to_category (
+        INSERT INTO tennisranch_4x.google_base_category_to_category (
           google_base_category_id, category_id
         ) VALUES ?
       `, [values]);

@@ -18,11 +18,11 @@ class CartSync {
 
       // 清空目标表
       logger.info('清空目标表...');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_cart');
+      await targetConn.query('DELETE FROM tennisranch_4x.cart');
       logger.info('目标表清空完成');
 
-      // 同步 cart 表到 oc_cart
-      logger.info('开始同步 cart 表到 oc_cart...');
+      // 同步 cart 表到 cart
+      logger.info('开始同步 cart 表到 cart...');
       const [carts] = await sourceConn.query(`
         SELECT 
           cart_id, customer_id, session_id, product_id, \`option\`, quantity, date_added, recurring_id
@@ -47,12 +47,12 @@ class CartSync {
         ]);
 
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_cart (
+          INSERT INTO tennisranch_4x.cart (
             cart_id, customer_id, session_id, product_id, \`option\`, quantity, 
             price, store_id, override, subscription_plan_id, date_added
           ) VALUES ?
         `, [values]);
-        logger.info('oc_cart 表同步完成');
+        logger.info('cart 表同步完成');
       }
 
       await targetConn.commit();

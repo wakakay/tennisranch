@@ -78,3 +78,238 @@
 [INFO] 2025-07-03T08:55:34.063Z - 从源数据库读取到 20 条博客商店关联数据
 [INFO] 2025-07-03T08:55:34.124Z - oc_article_to_store 表同步完成
 [INFO] 2025-07-03T08:55:34.179Z - 博客数据同步完成
+[INFO] 2025-07-07T09:00:04.736Z - 服务器运行在 http://localhost:3000
+[INFO] 2025-07-16T08:32:17.605Z - === 测试去除oc_前缀功能 ===
+[INFO] 2025-07-16T08:32:17.615Z - 1. 测试获取oc_表名...
+[INFO] 2025-07-16T08:32:17.837Z - 找到 168 个oc_前缀的表
+[INFO] 2025-07-16T08:32:17.838Z - 前10个表名:
+[
+  "oc_address",
+  "oc_address_format",
+  "oc_antispam",
+  "oc_api",
+  "oc_api_history",
+  "oc_api_ip",
+  "oc_article",
+  "oc_article_comment",
+  "oc_article_description",
+  "oc_article_rating"
+]
+[INFO] 2025-07-16T08:32:17.838Z - 2. 测试获取需要更新的文件列表...
+[INFO] 2025-07-16T08:32:17.838Z - 需要更新 16 个文件
+[INFO] 2025-07-16T08:32:17.838Z - 文件列表:
+[
+  "src/services/ProductService.js",
+  "src/services/syncService.js",
+  "src/services/InformationSync.js",
+  "src/services/CustomerOtherSync.js",
+  "src/services/TagSync.js",
+  "src/services/ZoneSync.js",
+  "src/services/BlogSync.js",
+  "src/services/CouponSync.js",
+  "src/services/BannerSync.js",
+  "src/services/CartSync.js",
+  "src/services/GoogleBaseSync.js",
+  "src/services/CustomerSync.js",
+  "src/services/ReturnSync.js",
+  "src/services/ReviewSync.js",
+  "src/controllers/syncController.js",
+  "test-db-connection.js"
+]
+[INFO] 2025-07-16T08:32:17.839Z - === 测试完成 ===
+[INFO] 2025-07-16T08:32:17.839Z - 如需执行实际操作，请通过Web界面或调用 service.removeOcPrefix()
+[INFO] 2025-07-16T08:32:38.429Z - 服务器运行在 http://localhost:3000
+[INFO] 2025-07-16T08:32:53.907Z - 开始执行去除oc_前缀操作...
+[INFO] 2025-07-16T08:32:53.907Z - === 开始执行去除oc_前缀操作 ===
+[INFO] 2025-07-16T08:32:53.908Z - 第一步：重命名数据库表...
+[INFO] 2025-07-16T08:32:54.136Z - 开始重命名数据库表，去除oc_前缀...
+[INFO] 2025-07-16T08:32:54.316Z - 找到 168 个需要重命名的表
+[INFO] 2025-07-16T08:32:54.437Z - ✓ oc_address → address
+[INFO] 2025-07-16T08:32:54.543Z - ✓ oc_address_format → address_format
+[INFO] 2025-07-16T08:32:54.661Z - ✓ oc_antispam → antispam
+[INFO] 2025-07-16T08:32:54.766Z - ✓ oc_api → api
+[INFO] 2025-07-16T08:32:54.873Z - ✓ oc_api_history → api_history
+[INFO] 2025-07-16T08:32:54.981Z - ✓ oc_api_ip → api_ip
+[INFO] 2025-07-16T08:32:55.094Z - ✓ oc_article → article
+[INFO] 2025-07-16T08:32:55.234Z - ✓ oc_article_comment → article_comment
+[INFO] 2025-07-16T08:32:55.346Z - ✓ oc_article_description → article_description
+[INFO] 2025-07-16T08:32:55.458Z - ✓ oc_article_rating → article_rating
+[INFO] 2025-07-16T08:32:55.573Z - ✓ oc_article_to_layout → article_to_layout
+[INFO] 2025-07-16T08:32:55.679Z - ✓ oc_article_to_store → article_to_store
+[INFO] 2025-07-16T08:32:55.783Z - ✓ oc_attribute → attribute
+[INFO] 2025-07-16T08:32:55.891Z - ✓ oc_attribute_description → attribute_description
+[INFO] 2025-07-16T08:32:55.999Z - ✓ oc_attribute_group → attribute_group
+[INFO] 2025-07-16T08:32:56.117Z - ✓ oc_attribute_group_description → attribute_group_description
+[INFO] 2025-07-16T08:32:56.229Z - ✓ oc_banner → banner
+[INFO] 2025-07-16T08:32:56.368Z - ✓ oc_banner_image → banner_image
+[INFO] 2025-07-16T08:32:56.475Z - ✓ oc_cart → cart
+[INFO] 2025-07-16T08:32:56.581Z - ✓ oc_category → category
+[INFO] 2025-07-16T08:32:56.686Z - ✓ oc_category_description → category_description
+[INFO] 2025-07-16T08:32:56.792Z - ✓ oc_category_filter → category_filter
+[INFO] 2025-07-16T08:32:56.902Z - ✓ oc_category_path → category_path
+[INFO] 2025-07-16T08:32:57.034Z - ✓ oc_category_to_layout → category_to_layout
+[INFO] 2025-07-16T08:32:57.161Z - ✓ oc_category_to_store → category_to_store
+[INFO] 2025-07-16T08:32:57.270Z - ✓ oc_country → country
+[INFO] 2025-07-16T08:32:57.375Z - ✓ oc_country_description → country_description
+[INFO] 2025-07-16T08:32:57.518Z - ✓ oc_coupon → coupon
+[INFO] 2025-07-16T08:32:57.622Z - ✓ oc_coupon_category → coupon_category
+[INFO] 2025-07-16T08:32:57.727Z - ✓ oc_coupon_history → coupon_history
+[INFO] 2025-07-16T08:32:57.833Z - ✓ oc_coupon_product → coupon_product
+[INFO] 2025-07-16T08:32:57.937Z - ✓ oc_cron → cron
+[INFO] 2025-07-16T08:32:58.041Z - ✓ oc_currency → currency
+[INFO] 2025-07-16T08:32:58.149Z - ✓ oc_customer → customer
+[INFO] 2025-07-16T08:32:58.256Z - ✓ oc_customer_activity → customer_activity
+[INFO] 2025-07-16T08:32:58.366Z - ✓ oc_customer_affiliate → customer_affiliate
+[INFO] 2025-07-16T08:32:58.495Z - ✓ oc_customer_affiliate_report → customer_affiliate_report
+[INFO] 2025-07-16T08:32:58.602Z - ✓ oc_customer_approval → customer_approval
+[INFO] 2025-07-16T08:32:58.706Z - ✓ oc_customer_authorize → customer_authorize
+[INFO] 2025-07-16T08:32:58.813Z - ✓ oc_customer_group → customer_group
+[INFO] 2025-07-16T08:32:59.055Z - ✓ oc_customer_group_description → customer_group_description
+[INFO] 2025-07-16T08:32:59.161Z - ✓ oc_customer_history → customer_history
+[INFO] 2025-07-16T08:32:59.267Z - ✓ oc_customer_ip → customer_ip
+[INFO] 2025-07-16T08:32:59.649Z - ✓ oc_customer_login → customer_login
+[INFO] 2025-07-16T08:32:59.754Z - ✓ oc_customer_online → customer_online
+[INFO] 2025-07-16T08:32:59.874Z - ✓ oc_customer_reward → customer_reward
+[INFO] 2025-07-16T08:32:59.982Z - ✓ oc_customer_search → customer_search
+[INFO] 2025-07-16T08:33:00.086Z - ✓ oc_customer_token → customer_token
+[INFO] 2025-07-16T08:33:00.202Z - ✓ oc_customer_transaction → customer_transaction
+[INFO] 2025-07-16T08:33:00.308Z - ✓ oc_customer_wishlist → customer_wishlist
+[INFO] 2025-07-16T08:33:00.414Z - ✓ oc_custom_field → custom_field
+[INFO] 2025-07-16T08:33:00.519Z - ✓ oc_custom_field_customer_group → custom_field_customer_group
+[INFO] 2025-07-16T08:33:00.623Z - ✓ oc_custom_field_description → custom_field_description
+[INFO] 2025-07-16T08:33:00.728Z - ✓ oc_custom_field_value → custom_field_value
+[INFO] 2025-07-16T08:33:00.846Z - ✓ oc_custom_field_value_description → custom_field_value_description
+[INFO] 2025-07-16T08:33:00.962Z - ✓ oc_download → download
+[INFO] 2025-07-16T08:33:01.078Z - ✓ oc_download_description → download_description
+[INFO] 2025-07-16T08:33:01.192Z - ✓ oc_download_report → download_report
+[INFO] 2025-07-16T08:33:01.365Z - ✓ oc_event → event
+[INFO] 2025-07-16T08:33:01.469Z - ✓ oc_extension → extension
+[INFO] 2025-07-16T08:33:01.575Z - ✓ oc_extension_install → extension_install
+[INFO] 2025-07-16T08:33:01.681Z - ✓ oc_extension_path → extension_path
+[INFO] 2025-07-16T08:33:01.788Z - ✓ oc_filter → filter
+[INFO] 2025-07-16T08:33:01.899Z - ✓ oc_filter_description → filter_description
+[INFO] 2025-07-16T08:33:02.033Z - ✓ oc_filter_group → filter_group
+[INFO] 2025-07-16T08:33:02.138Z - ✓ oc_filter_group_description → filter_group_description
+[INFO] 2025-07-16T08:33:02.258Z - ✓ oc_gdpr → gdpr
+[INFO] 2025-07-16T08:33:02.362Z - ✓ oc_geo_zone → geo_zone
+[INFO] 2025-07-16T08:33:02.465Z - ✓ oc_google_base_category → google_base_category
+[INFO] 2025-07-16T08:33:02.583Z - ✓ oc_google_base_category_to_category → google_base_category_to_category
+[INFO] 2025-07-16T08:33:02.709Z - ✓ oc_identifier → identifier
+[INFO] 2025-07-16T08:33:02.814Z - ✓ oc_information → information
+[INFO] 2025-07-16T08:33:02.923Z - ✓ oc_information_description → information_description
+[INFO] 2025-07-16T08:33:03.049Z - ✓ oc_information_to_layout → information_to_layout
+[INFO] 2025-07-16T08:33:03.154Z - ✓ oc_information_to_store → information_to_store
+[INFO] 2025-07-16T08:33:03.263Z - ✓ oc_language → language
+[INFO] 2025-07-16T08:33:03.370Z - ✓ oc_layout → layout
+[INFO] 2025-07-16T08:33:03.488Z - ✓ oc_layout_module → layout_module
+[INFO] 2025-07-16T08:33:03.604Z - ✓ oc_layout_route → layout_route
+[INFO] 2025-07-16T08:33:03.718Z - ✓ oc_length_class → length_class
+[INFO] 2025-07-16T08:33:03.825Z - ✓ oc_length_class_description → length_class_description
+[INFO] 2025-07-16T08:33:03.945Z - ✓ oc_location → location
+[INFO] 2025-07-16T08:33:04.050Z - ✓ oc_manufacturer → manufacturer
+[INFO] 2025-07-16T08:33:04.161Z - ✓ oc_manufacturer_to_layout → manufacturer_to_layout
+[INFO] 2025-07-16T08:33:04.266Z - ✓ oc_manufacturer_to_store → manufacturer_to_store
+[INFO] 2025-07-16T08:33:04.392Z - ✓ oc_marketing → marketing
+[INFO] 2025-07-16T08:33:04.539Z - ✓ oc_marketing_report → marketing_report
+[INFO] 2025-07-16T08:33:04.648Z - ✓ oc_modification → modification
+[INFO] 2025-07-16T08:33:04.756Z - ✓ oc_module → module
+[INFO] 2025-07-16T08:33:04.917Z - ✓ oc_new_customer_coupon → new_customer_coupon
+[INFO] 2025-07-16T08:33:05.026Z - ✓ oc_new_customer_coupon_category → new_customer_coupon_category
+[INFO] 2025-07-16T08:33:05.139Z - ✓ oc_new_customer_coupon_history → new_customer_coupon_history
+[INFO] 2025-07-16T08:33:05.332Z - ✓ oc_new_customer_coupon_product → new_customer_coupon_product
+[INFO] 2025-07-16T08:33:05.439Z - ✓ oc_notification → notification
+[INFO] 2025-07-16T08:33:05.553Z - ✓ oc_option → option
+[INFO] 2025-07-16T08:33:05.658Z - ✓ oc_option_description → option_description
+[INFO] 2025-07-16T08:33:05.769Z - ✓ oc_option_value → option_value
+[INFO] 2025-07-16T08:33:05.876Z - ✓ oc_option_value_description → option_value_description
+[INFO] 2025-07-16T08:33:05.986Z - ✓ oc_order → order
+[INFO] 2025-07-16T08:33:06.090Z - ✓ oc_order_history → order_history
+[INFO] 2025-07-16T08:33:06.195Z - ✓ oc_order_option → order_option
+[INFO] 2025-07-16T08:33:06.303Z - ✓ oc_order_product → order_product
+[INFO] 2025-07-16T08:33:06.411Z - ✓ oc_order_status → order_status
+[INFO] 2025-07-16T08:33:06.514Z - ✓ oc_order_subscription → order_subscription
+[INFO] 2025-07-16T08:33:06.618Z - ✓ oc_order_total → order_total
+[INFO] 2025-07-16T08:33:06.761Z - ✓ oc_paypal_checkout_integration_customer_token → paypal_checkout_integration_customer_token
+[INFO] 2025-07-16T08:33:06.862Z - ✓ oc_paypal_checkout_integration_order → paypal_checkout_integration_order
+[INFO] 2025-07-16T08:33:06.966Z - ✓ oc_product → product
+[INFO] 2025-07-16T08:33:07.070Z - ✓ oc_product_attribute → product_attribute
+[INFO] 2025-07-16T08:33:07.175Z - ✓ oc_product_code → product_code
+[INFO] 2025-07-16T08:33:07.281Z - ✓ oc_product_description → product_description
+[INFO] 2025-07-16T08:33:07.400Z - ✓ oc_product_discount → product_discount
+[INFO] 2025-07-16T08:33:07.526Z - ✓ oc_product_filter → product_filter
+[INFO] 2025-07-16T08:33:07.682Z - ✓ oc_product_image → product_image
+[INFO] 2025-07-16T08:33:08.020Z - ✓ oc_product_option → product_option
+[INFO] 2025-07-16T08:33:08.563Z - ✓ oc_product_option_value → product_option_value
+[INFO] 2025-07-16T08:33:08.817Z - ✓ oc_product_related → product_related
+[INFO] 2025-07-16T08:33:08.928Z - ✓ oc_product_report → product_report
+[INFO] 2025-07-16T08:33:09.041Z - ✓ oc_product_reward → product_reward
+[INFO] 2025-07-16T08:33:09.180Z - ✓ oc_product_subscription → product_subscription
+[INFO] 2025-07-16T08:33:09.287Z - ✓ oc_product_to_category → product_to_category
+[INFO] 2025-07-16T08:33:09.391Z - ✓ oc_product_to_download → product_to_download
+[INFO] 2025-07-16T08:33:09.501Z - ✓ oc_product_to_layout → product_to_layout
+[INFO] 2025-07-16T08:33:09.610Z - ✓ oc_product_to_store → product_to_store
+[INFO] 2025-07-16T08:33:09.714Z - ✓ oc_product_viewed → product_viewed
+[INFO] 2025-07-16T08:33:09.822Z - ✓ oc_return → return
+[INFO] 2025-07-16T08:33:09.927Z - ✓ oc_return_action → return_action
+[INFO] 2025-07-16T08:33:10.033Z - ✓ oc_return_history → return_history
+[INFO] 2025-07-16T08:33:10.137Z - ✓ oc_return_reason → return_reason
+[INFO] 2025-07-16T08:33:10.242Z - ✓ oc_return_status → return_status
+[INFO] 2025-07-16T08:33:10.347Z - ✓ oc_review → review
+[INFO] 2025-07-16T08:33:10.478Z - ✓ oc_seo_url → seo_url
+[INFO] 2025-07-16T08:33:10.600Z - ✓ oc_session → session
+[INFO] 2025-07-16T08:33:10.703Z - ✓ oc_setting → setting
+[INFO] 2025-07-16T08:33:10.907Z - ✓ oc_startup → startup
+[INFO] 2025-07-16T08:33:11.296Z - ✓ oc_statistics → statistics
+[INFO] 2025-07-16T08:33:11.632Z - ✓ oc_stock_status → stock_status
+[INFO] 2025-07-16T08:33:11.872Z - ✓ oc_store → store
+[INFO] 2025-07-16T08:33:11.978Z - ✓ oc_subscription → subscription
+[INFO] 2025-07-16T08:33:12.083Z - ✓ oc_subscription_history → subscription_history
+[INFO] 2025-07-16T08:33:12.190Z - ✓ oc_subscription_log → subscription_log
+[INFO] 2025-07-16T08:33:12.323Z - ✓ oc_subscription_option → subscription_option
+[INFO] 2025-07-16T08:33:12.426Z - ✓ oc_subscription_plan → subscription_plan
+[INFO] 2025-07-16T08:33:12.534Z - ✓ oc_subscription_plan_description → subscription_plan_description
+[INFO] 2025-07-16T08:33:12.644Z - ✓ oc_subscription_product → subscription_product
+[INFO] 2025-07-16T08:33:12.751Z - ✓ oc_subscription_status → subscription_status
+[INFO] 2025-07-16T08:33:12.920Z - ✓ oc_tag → tag
+[INFO] 2025-07-16T08:33:13.030Z - ✓ oc_tax_class → tax_class
+[INFO] 2025-07-16T08:33:13.158Z - ✓ oc_tax_rate → tax_rate
+[INFO] 2025-07-16T08:33:13.272Z - ✓ oc_tax_rate_to_customer_group → tax_rate_to_customer_group
+[INFO] 2025-07-16T08:33:13.381Z - ✓ oc_tax_rule → tax_rule
+[INFO] 2025-07-16T08:33:13.487Z - ✓ oc_theme → theme
+[INFO] 2025-07-16T08:33:13.596Z - ✓ oc_topic → topic
+[INFO] 2025-07-16T08:33:13.732Z - ✓ oc_topic_description → topic_description
+[INFO] 2025-07-16T08:33:13.972Z - ✓ oc_topic_to_layout → topic_to_layout
+[INFO] 2025-07-16T08:33:14.140Z - ✓ oc_topic_to_store → topic_to_store
+[INFO] 2025-07-16T08:33:14.258Z - ✓ oc_translation → translation
+[INFO] 2025-07-16T08:33:14.362Z - ✓ oc_upload → upload
+[INFO] 2025-07-16T08:33:14.466Z - ✓ oc_user → user
+[INFO] 2025-07-16T08:33:14.574Z - ✓ oc_user_authorize → user_authorize
+[INFO] 2025-07-16T08:33:14.677Z - ✓ oc_user_group → user_group
+[INFO] 2025-07-16T08:33:14.782Z - ✓ oc_user_login → user_login
+[INFO] 2025-07-16T08:33:14.890Z - ✓ oc_user_token → user_token
+[INFO] 2025-07-16T08:33:15.002Z - ✓ oc_weight_class → weight_class
+[INFO] 2025-07-16T08:33:15.110Z - ✓ oc_weight_class_description → weight_class_description
+[INFO] 2025-07-16T08:33:15.219Z - ✓ oc_zone → zone
+[INFO] 2025-07-16T08:33:15.365Z - ✓ oc_zone_description → zone_description
+[INFO] 2025-07-16T08:33:15.566Z - ✓ oc_zone_to_geo_zone → zone_to_geo_zone
+[SUCCESS] 2025-07-16T08:33:15.672Z - 数据库表重命名完成！成功: 168, 失败: 0
+[INFO] 2025-07-16T08:33:15.672Z - 第二步：更新代码文件...
+[INFO] 2025-07-16T08:33:15.673Z - 开始更新代码文件中的表名引用...
+[INFO] 2025-07-16T08:33:15.679Z - ✓ 更新文件 src/services/ProductService.js，共 22 处修改
+[INFO] 2025-07-16T08:33:15.682Z - ✓ 更新文件 src/services/syncService.js，共 49 处修改
+[INFO] 2025-07-16T08:33:15.684Z - ✓ 更新文件 src/services/InformationSync.js，共 19 处修改
+[INFO] 2025-07-16T08:33:15.687Z - ✓ 更新文件 src/services/CustomerOtherSync.js，共 24 处修改
+[INFO] 2025-07-16T08:33:15.689Z - ✓ 更新文件 src/services/TagSync.js，共 5 处修改
+[INFO] 2025-07-16T08:33:15.691Z - ✓ 更新文件 src/services/ZoneSync.js，共 24 处修改
+[INFO] 2025-07-16T08:33:15.692Z - ✓ 更新文件 src/services/BlogSync.js，共 21 处修改
+[INFO] 2025-07-16T08:33:15.694Z - ✓ 更新文件 src/services/CouponSync.js，共 8 处修改
+[INFO] 2025-07-16T08:33:15.696Z - ✓ 更新文件 src/services/BannerSync.js，共 4 处修改
+[INFO] 2025-07-16T08:33:15.698Z - ✓ 更新文件 src/services/CartSync.js，共 5 处修改
+[INFO] 2025-07-16T08:33:15.700Z - ✓ 更新文件 src/services/GoogleBaseSync.js，共 9 处修改
+[INFO] 2025-07-16T08:33:15.703Z - ✓ 更新文件 src/services/CustomerSync.js，共 9 处修改
+[INFO] 2025-07-16T08:33:15.705Z - ✓ 更新文件 src/services/ReturnSync.js，共 10 处修改
+[INFO] 2025-07-16T08:33:15.707Z - ✓ 更新文件 src/services/ReviewSync.js，共 2 处修改
+[INFO] 2025-07-16T08:33:15.709Z - ✓ 更新文件 test-db-connection.js，共 4 处修改
+[SUCCESS] 2025-07-16T08:33:15.709Z - 代码文件更新完成！成功: 16, 失败: 0, 总修改: 215 处
+[SUCCESS] 2025-07-16T08:33:15.710Z - === oc_前缀移除操作完成 ===
+[SUCCESS] 2025-07-16T08:33:15.710Z - oc_前缀移除操作完成

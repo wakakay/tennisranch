@@ -7,9 +7,9 @@ const logger = require('../utils/logger');
 const sourceConfig = {
   host: '8.219.238.63',
   port: 3306,
-  user: 'tennisranch_3x',
+  user: 'tennisranch_2x_t',
   password: 'YwxAa4Pb7jWd5jGe',
-  database: 'tennisranch_3x',
+  database: 'tennisranch_2x_t',
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0

@@ -49,11 +49,11 @@ class InformationSync {
    */
   async syncMainInformation(sourceConn, targetConn) {
     // 清空目标表
-    logger.info('清空目标表 oc_information...');
-    await targetConn.query('DELETE FROM tennisranch_4x.oc_information');
+    logger.info('清空目标表 information...');
+    await targetConn.query('DELETE FROM tennisranch_4x.information');
 
     // 重置自增ID计数器
-    await targetConn.query('ALTER TABLE tennisranch_4x.oc_information AUTO_INCREMENT = 1');
+    await targetConn.query('ALTER TABLE tennisranch_4x.information AUTO_INCREMENT = 1');
 
     // 获取源数据
     logger.info('获取源表 information 数据...');
@@ -73,7 +73,7 @@ class InformationSync {
       ]);
 
       await targetConn.query(`
-        INSERT INTO tennisranch_4x.oc_information (
+        INSERT INTO tennisranch_4x.information (
           information_id, sort_order, status
         ) VALUES ?
       `, [values]);
@@ -90,14 +90,14 @@ class InformationSync {
    */
   async syncInformationDescription(sourceConn, targetConn) {
     // 清空目标表
-    logger.info('清空目标表 oc_information_description...');
-    await targetConn.query('DELETE FROM tennisranch_4x.oc_information_description');
+    logger.info('清空目标表 information_description...');
+    await targetConn.query('DELETE FROM tennisranch_4x.information_description');
 
     // 重置自增ID计数器（如果有自增ID）
-    const [columns] = await targetConn.query('SHOW COLUMNS FROM tennisranch_4x.oc_information_description');
+    const [columns] = await targetConn.query('SHOW COLUMNS FROM tennisranch_4x.information_description');
     const hasAutoIncrement = columns.some(col => col.Extra === 'auto_increment');
     if (hasAutoIncrement) {
-      await targetConn.query('ALTER TABLE tennisranch_4x.oc_information_description AUTO_INCREMENT = 1');
+      await targetConn.query('ALTER TABLE tennisranch_4x.information_description AUTO_INCREMENT = 1');
     }
 
     // 获取源数据
@@ -122,7 +122,7 @@ class InformationSync {
       ]);
 
       await targetConn.query(`
-        INSERT INTO tennisranch_4x.oc_information_description (
+        INSERT INTO tennisranch_4x.information_description (
           information_id, language_id, title, description, meta_title, meta_description, meta_keyword
         ) VALUES ?
       `, [values]);
@@ -139,14 +139,14 @@ class InformationSync {
    */
   async syncInformationToLayout(sourceConn, targetConn) {
     // 清空目标表
-    logger.info('清空目标表 oc_information_to_layout...');
-    await targetConn.query('DELETE FROM tennisranch_4x.oc_information_to_layout');
+    logger.info('清空目标表 information_to_layout...');
+    await targetConn.query('DELETE FROM tennisranch_4x.information_to_layout');
 
     // 重置自增ID计数器（如果有自增ID）
-    const [columns] = await targetConn.query('SHOW COLUMNS FROM tennisranch_4x.oc_information_to_layout');
+    const [columns] = await targetConn.query('SHOW COLUMNS FROM tennisranch_4x.information_to_layout');
     const hasAutoIncrement = columns.some(col => col.Extra === 'auto_increment');
     if (hasAutoIncrement) {
-      await targetConn.query('ALTER TABLE tennisranch_4x.oc_information_to_layout AUTO_INCREMENT = 1');
+      await targetConn.query('ALTER TABLE tennisranch_4x.information_to_layout AUTO_INCREMENT = 1');
     }
 
     // 获取源数据
@@ -167,7 +167,7 @@ class InformationSync {
       ]);
 
       await targetConn.query(`
-        INSERT INTO tennisranch_4x.oc_information_to_layout (
+        INSERT INTO tennisranch_4x.information_to_layout (
           information_id, store_id, layout_id
         ) VALUES ?
       `, [values]);
@@ -184,14 +184,14 @@ class InformationSync {
    */
   async syncInformationToStore(sourceConn, targetConn) {
     // 清空目标表
-    logger.info('清空目标表 oc_information_to_store...');
-    await targetConn.query('DELETE FROM tennisranch_4x.oc_information_to_store');
+    logger.info('清空目标表 information_to_store...');
+    await targetConn.query('DELETE FROM tennisranch_4x.information_to_store');
 
     // 重置自增ID计数器（如果有自增ID）
-    const [columns] = await targetConn.query('SHOW COLUMNS FROM tennisranch_4x.oc_information_to_store');
+    const [columns] = await targetConn.query('SHOW COLUMNS FROM tennisranch_4x.information_to_store');
     const hasAutoIncrement = columns.some(col => col.Extra === 'auto_increment');
     if (hasAutoIncrement) {
-      await targetConn.query('ALTER TABLE tennisranch_4x.oc_information_to_store AUTO_INCREMENT = 1');
+      await targetConn.query('ALTER TABLE tennisranch_4x.information_to_store AUTO_INCREMENT = 1');
     }
 
     // 获取源数据
@@ -211,7 +211,7 @@ class InformationSync {
       ]);
 
       await targetConn.query(`
-        INSERT INTO tennisranch_4x.oc_information_to_store (
+        INSERT INTO tennisranch_4x.information_to_store (
           information_id, store_id
         ) VALUES ?
       `, [values]);

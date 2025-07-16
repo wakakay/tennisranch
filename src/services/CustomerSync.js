@@ -24,8 +24,8 @@ class CustomerSync {
       logger.info(`获取到 ${rows.length} 条 address 数据`);
       
       // 清空目标表
-      logger.info('清空目标表 oc_address...');
-      await targetConn.query('DELETE FROM oc_address');
+      logger.info('清空目标表 address...');
+      await targetConn.query('DELETE FROM address');
       
       // 批量插入数据
       if (rows.length > 0) {
@@ -46,7 +46,7 @@ class CustomerSync {
         ]);
 
         await targetConn.query(
-          `INSERT INTO oc_address (
+          `INSERT INTO address (
             address_id, customer_id, firstname, lastname, company,
             address_1, address_2, city, postcode, country_id,
             zone_id, custom_field, \`default\`
@@ -97,8 +97,8 @@ class CustomerSync {
       await targetConn.query('SET FOREIGN_KEY_CHECKS = 0');
       
       // 清空目标表
-      logger.info('清空目标表 oc_customer...');
-      await targetConn.query('TRUNCATE TABLE oc_customer');
+      logger.info('清空目标表 customer...');
+      await targetConn.query('TRUNCATE TABLE customer');
       
       // 批量插入数据
       if (rows.length > 0) {
@@ -145,7 +145,7 @@ class CustomerSync {
           while (!success && retryCount < maxRetries) {
             try {
               await targetConn.query(
-                `INSERT INTO oc_customer (
+                `INSERT INTO customer (
                   customer_id, customer_group_id, store_id, language_id,
                   firstname, lastname, email, telephone, password,
                   custom_field, newsletter, ip, status, safe,
@@ -177,7 +177,7 @@ class CustomerSync {
           if (row.address_id) {
             try {
               await targetConn.query(
-                'UPDATE oc_address SET `default` = 1 WHERE address_id = ? AND customer_id = ?',
+                'UPDATE address SET `default` = 1 WHERE address_id = ? AND customer_id = ?',
                 [row.address_id, row.customer_id]
               );
               addressCount++;
@@ -308,8 +308,8 @@ class CustomerSync {
 
       // 验证各表的记录数
       const tables = [
-        { source: 'customer', target: 'oc_customer' },
-        { source: 'address', target: 'oc_address' }
+        { source: 'customer', target: 'customer' },
+        { source: 'address', target: 'address' }
       ];
 
       for (const table of tables) {

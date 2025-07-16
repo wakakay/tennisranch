@@ -62,7 +62,7 @@ class CustomerOtherSync {
    * @returns {Promise<void>}
    */
   async syncCustomerActivity() {
-    await this.syncTable('customer_activity', 'oc_customer_activity');
+    await this.syncTable('customer_activity', 'customer_activity');
   }
 
   /**
@@ -70,7 +70,7 @@ class CustomerOtherSync {
    * @returns {Promise<void>}
    */
   async syncCustomerGroup() {
-    await this.syncTable('customer_group', 'oc_customer_group');
+    await this.syncTable('customer_group', 'customer_group');
   }
 
   /**
@@ -78,7 +78,7 @@ class CustomerOtherSync {
    * @returns {Promise<void>}
    */
   async syncCustomerGroupDescription() {
-    await this.syncTable('customer_group_description', 'oc_customer_group_description');
+    await this.syncTable('customer_group_description', 'customer_group_description');
   }
 
   /**
@@ -86,7 +86,7 @@ class CustomerOtherSync {
    * @returns {Promise<void>}
    */
   async syncCustomerLogin() {
-    await this.syncTable('customer_login', 'oc_customer_login');
+    await this.syncTable('customer_login', 'customer_login');
   }
 
   /**
@@ -94,7 +94,7 @@ class CustomerOtherSync {
    * @returns {Promise<void>}
    */
   async syncCustomerOnline() {
-    await this.syncTable('customer_online', 'oc_customer_online');
+    await this.syncTable('customer_online', 'customer_online');
   }
 
   /**
@@ -102,7 +102,7 @@ class CustomerOtherSync {
    * @returns {Promise<void>}
    */
   async syncCustomerReward() {
-    await this.syncTable('customer_reward', 'oc_customer_reward');
+    await this.syncTable('customer_reward', 'customer_reward');
   }
 
   /**
@@ -110,7 +110,7 @@ class CustomerOtherSync {
    * @returns {Promise<void>}
    */
   async syncCustomerTransaction() {
-    await this.syncTable('customer_transaction', 'oc_customer_transaction');
+    await this.syncTable('customer_transaction', 'customer_transaction');
   }
 
   /**
@@ -118,7 +118,7 @@ class CustomerOtherSync {
    * @returns {Promise<void>}
    */
   async syncCustomerSearch() {
-    await this.syncTable('customer_search', 'oc_customer_search');
+    await this.syncTable('customer_search', 'customer_search');
   }
 
   /**
@@ -137,8 +137,8 @@ class CustomerOtherSync {
       logger.info(`获取到 ${rows.length} 条 customer_ip 数据`);
       
       // 清空目标表
-      logger.info('清空目标表 oc_customer_ip...');
-      await targetConn.query('TRUNCATE TABLE oc_customer_ip');
+      logger.info('清空目标表 customer_ip...');
+      await targetConn.query('TRUNCATE TABLE customer_ip');
       
       // 批量插入数据
       if (rows.length > 0) {
@@ -162,7 +162,7 @@ class CustomerOtherSync {
 
           try {
             await targetConn.query(
-              `INSERT INTO oc_customer_ip (
+              `INSERT INTO customer_ip (
                 customer_ip_id,
                 customer_id,
                 ip,
@@ -211,8 +211,8 @@ class CustomerOtherSync {
       logger.info(`获取到 ${rows.length} 条 customer_wishlist 数据`);
       
       // 清空目标表
-      logger.info('清空目标表 oc_customer_wishlist...');
-      await targetConn.query('TRUNCATE TABLE oc_customer_wishlist');
+      logger.info('清空目标表 customer_wishlist...');
+      await targetConn.query('TRUNCATE TABLE customer_wishlist');
       
       // 批量插入数据
       if (rows.length > 0) {
@@ -234,7 +234,7 @@ class CustomerOtherSync {
 
           try {
             await targetConn.query(
-              `INSERT INTO oc_customer_wishlist (
+              `INSERT INTO customer_wishlist (
                 customer_id,
                 product_id,
                 store_id,
@@ -375,16 +375,16 @@ class CustomerOtherSync {
 
       // 验证各表的记录数
       const tables = [
-        { source: 'customer_activity', target: 'oc_customer_activity' },
-        { source: 'customer_group', target: 'oc_customer_group' },
-        { source: 'customer_group_description', target: 'oc_customer_group_description' },
-        { source: 'customer_login', target: 'oc_customer_login' },
-        { source: 'customer_online', target: 'oc_customer_online' },
-        { source: 'customer_reward', target: 'oc_customer_reward' },
-        { source: 'customer_transaction', target: 'oc_customer_transaction' },
-        { source: 'customer_search', target: 'oc_customer_search' },
-        { source: 'customer_ip', target: 'oc_customer_ip' },
-        { source: 'customer_wishlist', target: 'oc_customer_wishlist' }
+        { source: 'customer_activity', target: 'customer_activity' },
+        { source: 'customer_group', target: 'customer_group' },
+        { source: 'customer_group_description', target: 'customer_group_description' },
+        { source: 'customer_login', target: 'customer_login' },
+        { source: 'customer_online', target: 'customer_online' },
+        { source: 'customer_reward', target: 'customer_reward' },
+        { source: 'customer_transaction', target: 'customer_transaction' },
+        { source: 'customer_search', target: 'customer_search' },
+        { source: 'customer_ip', target: 'customer_ip' },
+        { source: 'customer_wishlist', target: 'customer_wishlist' }
       ];
 
       for (const table of tables) {

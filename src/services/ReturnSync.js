@@ -11,7 +11,7 @@ class ReturnSync {
     static async syncReturn(sourceConn, targetConn) {
         logger.info('开始同步退货主表...');
         // 清空目标表
-        await targetConn.query('TRUNCATE TABLE oc_return');
+        await targetConn.query('TRUNCATE TABLE return');
         // 获取源数据
         const [rows] = await sourceConn.query('SELECT * FROM `return`');
         // 批量插入
@@ -19,7 +19,7 @@ class ReturnSync {
             const fields = Object.keys(rows[0]);
             const values = rows.map(row => fields.map(f => row[f]));
             await targetConn.query(
-                `INSERT INTO oc_return (${fields.join(',')}) VALUES ?`,
+                `INSERT INTO return (${fields.join(',')}) VALUES ?`,
                 [values]
             );
             logger.info(`成功同步 ${rows.length} 条退货数据`);
@@ -36,13 +36,13 @@ class ReturnSync {
      */
     static async syncReturnAction(sourceConn, targetConn) {
         logger.info('开始同步退货操作表...');
-        await targetConn.query('TRUNCATE TABLE oc_return_action');
+        await targetConn.query('TRUNCATE TABLE return_action');
         const [rows] = await sourceConn.query('SELECT * FROM `return_action`');
         if (rows.length > 0) {
             const fields = Object.keys(rows[0]);
             const values = rows.map(row => fields.map(f => row[f]));
             await targetConn.query(
-                `INSERT INTO oc_return_action (${fields.join(',')}) VALUES ?`,
+                `INSERT INTO return_action (${fields.join(',')}) VALUES ?`,
                 [values]
             );
             logger.info(`成功同步 ${rows.length} 条退货操作数据`);
@@ -59,13 +59,13 @@ class ReturnSync {
      */
     static async syncReturnHistory(sourceConn, targetConn) {
         logger.info('开始同步退货历史表...');
-        await targetConn.query('TRUNCATE TABLE oc_return_history');
+        await targetConn.query('TRUNCATE TABLE return_history');
         const [rows] = await sourceConn.query('SELECT * FROM `return_history`');
         if (rows.length > 0) {
             const fields = Object.keys(rows[0]);
             const values = rows.map(row => fields.map(f => row[f]));
             await targetConn.query(
-                `INSERT INTO oc_return_history (${fields.join(',')}) VALUES ?`,
+                `INSERT INTO return_history (${fields.join(',')}) VALUES ?`,
                 [values]
             );
             logger.info(`成功同步 ${rows.length} 条退货历史数据`);
@@ -82,13 +82,13 @@ class ReturnSync {
      */
     static async syncReturnReason(sourceConn, targetConn) {
         logger.info('开始同步退货原因表...');
-        await targetConn.query('TRUNCATE TABLE oc_return_reason');
+        await targetConn.query('TRUNCATE TABLE return_reason');
         const [rows] = await sourceConn.query('SELECT * FROM `return_reason`');
         if (rows.length > 0) {
             const fields = Object.keys(rows[0]);
             const values = rows.map(row => fields.map(f => row[f]));
             await targetConn.query(
-                `INSERT INTO oc_return_reason (${fields.join(',')}) VALUES ?`,
+                `INSERT INTO return_reason (${fields.join(',')}) VALUES ?`,
                 [values]
             );
             logger.info(`成功同步 ${rows.length} 条退货原因数据`);
@@ -105,13 +105,13 @@ class ReturnSync {
      */
     static async syncReturnStatus(sourceConn, targetConn) {
         logger.info('开始同步退货状态表...');
-        await targetConn.query('TRUNCATE TABLE oc_return_status');
+        await targetConn.query('TRUNCATE TABLE return_status');
         const [rows] = await sourceConn.query('SELECT * FROM `return_status`');
         if (rows.length > 0) {
             const fields = Object.keys(rows[0]);
             const values = rows.map(row => fields.map(f => row[f]));
             await targetConn.query(
-                `INSERT INTO oc_return_status (${fields.join(',')}) VALUES ?`,
+                `INSERT INTO return_status (${fields.join(',')}) VALUES ?`,
                 [values]
             );
             logger.info(`成功同步 ${rows.length} 条退货状态数据`);

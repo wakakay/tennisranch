@@ -15,7 +15,7 @@ class ReviewSync {
     try {
       // 清空目标表
       console.log('清空目标表...');
-      await targetConn.query('TRUNCATE TABLE `oc_review`');
+      await targetConn.query('TRUNCATE TABLE `review`');
       
       // 从源数据库获取评论数据
       console.log('从源数据库获取评论数据...');
@@ -44,7 +44,7 @@ class ReviewSync {
         ]);
         
         const sql = `
-          INSERT INTO oc_review (
+          INSERT INTO review (
             review_id, product_id, customer_id, author, 
             text, rating, status, date_added, date_modified
           ) VALUES ?

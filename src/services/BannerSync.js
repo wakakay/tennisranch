@@ -23,7 +23,7 @@ class BannerSync {
 
             try {
                 // 清空目标表
-                await targetConn.query('TRUNCATE TABLE oc_banner_image');
+                await targetConn.query('TRUNCATE TABLE banner_image');
 
                 // 获取源数据
                 const [rows] = await sourceConn.query('SELECT * FROM banner_image');
@@ -36,7 +36,7 @@ class BannerSync {
 
                     // 批量插入数据
                     await targetConn.query(
-                        `INSERT INTO oc_banner_image (${fields.join(',')}) VALUES ?`,
+                        `INSERT INTO banner_image (${fields.join(',')}) VALUES ?`,
                         [values]
                     );
                 }
@@ -77,7 +77,7 @@ class BannerSync {
 
             try {
                 // 清空目标表
-                await targetConn.query('TRUNCATE TABLE oc_banner');
+                await targetConn.query('TRUNCATE TABLE banner');
 
                 // 获取源数据
                 const [rows] = await sourceConn.query('SELECT * FROM banner');
@@ -90,7 +90,7 @@ class BannerSync {
 
                     // 批量插入数据
                     await targetConn.query(
-                        `INSERT INTO oc_banner (${fields.join(',')}) VALUES ?`,
+                        `INSERT INTO banner (${fields.join(',')}) VALUES ?`,
                         [values]
                     );
                 }

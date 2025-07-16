@@ -34,7 +34,7 @@ async function testConnections() {
             SELECT table_name 
             FROM information_schema.tables 
             WHERE table_schema = '${targetResult[0].db}'
-            AND table_name IN ('oc_tax_class', 'oc_tax_rate', 'oc_tax_rate_to_customer_group', 'oc_tax_rule')
+            AND table_name IN ('tax_class', 'tax_rate', 'tax_rate_to_customer_group', 'tax_rule')
         `);
         logger.info('目标数据库表检查结果:', targetTables);
 

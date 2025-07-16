@@ -80,12 +80,12 @@ class ProductService {
         // 2. 处理 viewed 数据
         const viewedData = rows.map(row => [row.product_id, row.viewed || 0]);
         if (viewedData.length > 0) {
-            await targetConn.query('TRUNCATE TABLE oc_product_viewed');
+            await targetConn.query('TRUNCATE TABLE product_viewed');
             await targetConn.query(
-                'INSERT INTO oc_product_viewed (product_id, viewed) VALUES ?',
+                'INSERT INTO product_viewed (product_id, viewed) VALUES ?',
                 [viewedData]
             );
-            logger.info(`同步 viewed 数据到 oc_product_viewed: ${viewedData.length} 条`);
+            logger.info(`同步 viewed 数据到 product_viewed: ${viewedData.length} 条`);
         }
 
         // 3. 构造批量插入SQL（排除 viewed 字段）
@@ -93,8 +93,8 @@ class ProductService {
         const values = rows.map(row => fields.map(f => row[f]));
 
         // 4. 清空并批量插入目标库
-        await targetConn.query('TRUNCATE TABLE oc_product');
-        const sql = `INSERT INTO oc_product (${fields.join(',')}) VALUES ?`;
+        await targetConn.query('TRUNCATE TABLE product');
+        const sql = `INSERT INTO product (${fields.join(',')}) VALUES ?`;
         await targetConn.query(sql, [values]);
         logger.info(`基础表同步完成，共同步 ${rows.length} 条数据`);
     }
@@ -108,7 +108,7 @@ class ProductService {
     static async syncSpecialTables(sourceConn, targetConn) {
         logger.info('开始同步特殊表...');
         // 清空目标表
-        await targetConn.query('TRUNCATE TABLE oc_product_discount');
+        await targetConn.query('TRUNCATE TABLE product_discount');
 
         // 1. product_discount
         const [discountRows] = await sourceConn.query('SELECT * FROM product_discount');
@@ -116,11 +116,11 @@ class ProductService {
             // 排除 product_discount_id 字段
             const fields = Object.keys(discountRows[0]).filter(f => f !== 'product_discount_id');
             const values = discountRows.map(row => fields.map(f => row[f]));
-            const sql = `INSERT INTO oc_product_discount (${fields.join(',')},type,special) VALUES ?`;
+            const sql = `INSERT INTO product_discount (${fields.join(',')},type,special) VALUES ?`;
             // 增加 type/special 字段
             const valuesWithType = values.map(v => v.concat(['discount', 0]));
             await targetConn.query(sql, [valuesWithType]);
-            logger.info(`同步 product_discount -> oc_product_discount: ${discountRows.length} 条`);
+            logger.info(`同步 product_discount -> product_discount: ${discountRows.length} 条`);
         }
         // 2. product_special
         const [specialRows] = await sourceConn.query('SELECT * FROM product_special');
@@ -128,11 +128,11 @@ class ProductService {
             // 排除 product_special_id 字段
             const fields = Object.keys(specialRows[0]).filter(f => f !== 'product_special_id');
             const values = specialRows.map(row => fields.map(f => row[f]));
-            const sql = `INSERT INTO oc_product_discount (${fields.join(',')},type,special) VALUES ?`;
+            const sql = `INSERT INTO product_discount (${fields.join(',')},type,special) VALUES ?`;
             // 增加 type/special 字段
             const valuesWithType = values.map(v => v.concat(['special', 1]));
             await targetConn.query(sql, [valuesWithType]);
-            logger.info(`同步 product_special -> oc_product_discount: ${specialRows.length} 条`);
+            logger.info(`同步 product_special -> product_discount: ${specialRows.length} 条`);
         }
         logger.info('特殊表同步完成');
     }
@@ -146,18 +146,18 @@ class ProductService {
     static async syncRelatedTables(sourceConn, targetConn) {
         logger.info('开始同步关联表...');
         const tables = [
-            { source: 'product_attribute', target: 'oc_product_attribute' },
-            { source: 'product_description', target: 'oc_product_description' },
-            { source: 'product_filter', target: 'oc_product_filter' },
-            { source: 'product_image', target: 'oc_product_image' },
-            { source: 'product_option', target: 'oc_product_option' },
-            { source: 'product_option_value', target: 'oc_product_option_value' },
-            { source: 'product_related', target: 'oc_product_related' },
-            { source: 'product_reward', target: 'oc_product_reward' },
-            { source: 'product_to_category', target: 'oc_product_to_category' },
-            { source: 'product_to_download', target: 'oc_product_to_download' },
-            { source: 'product_to_layout', target: 'oc_product_to_layout' },
-            { source: 'product_to_store', target: 'oc_product_to_store' }
+            { source: 'product_attribute', target: 'product_attribute' },
+            { source: 'product_description', target: 'product_description' },
+            { source: 'product_filter', target: 'product_filter' },
+            { source: 'product_image', target: 'product_image' },
+            { source: 'product_option', target: 'product_option' },
+            { source: 'product_option_value', target: 'product_option_value' },
+            { source: 'product_related', target: 'product_related' },
+            { source: 'product_reward', target: 'product_reward' },
+            { source: 'product_to_category', target: 'product_to_category' },
+            { source: 'product_to_download', target: 'product_to_download' },
+            { source: 'product_to_layout', target: 'product_to_layout' },
+            { source: 'product_to_store', target: 'product_to_store' }
         ];
 
         for (const table of tables) {

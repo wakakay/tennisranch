@@ -138,4 +138,10 @@ router.post('/google-base', GoogleBaseController.sync);
  */
 router.post('/blog', BlogController.sync);
 
+/**
+ * 去除目标数据库表名的oc_前缀
+ * @route POST /api/sync/remove-oc-prefix
+ */
+router.post('/remove-oc-prefix', syncController.removeOcPrefix);
+
 module.exports = router;

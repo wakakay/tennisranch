@@ -133,6 +133,16 @@
         <div class="button-group">
             <button id="syncBlog">Sync Blog</button>
         </div>
+
+        <!-- 危险操作区域 -->
+        <!--<div style="margin-top: 30px; padding: 20px; border: 2px solid #ff6b6b; border-radius: 8px; background-color: #fff5f5;">
+            <h3 style="color: #d63031; margin-top: 0;">⚠️ 危险操作区域</h3>
+            <p style="color: #636e72; margin-bottom: 15px;">以下操作将永久修改数据库结构，请确保已备份数据库！</p>
+            <div class="button-group">
+                <button id="removeOcPrefix" style="background-color: #d63031; border-color: #d63031;">Remove OC_ Prefix</button>
+            </div>
+        </div>-->
+
         <div id="status" class="status"></div>
     </div>
 
@@ -185,6 +195,15 @@
         document.getElementById('syncGoogleBase').addEventListener('click', () => syncData('google-base'));
         document.getElementById('syncTag').addEventListener('click', () => syncData('tag'));
         document.getElementById('syncBlog').addEventListener('click', () => syncData('blog'));
+
+        // 危险操作：去除oc_前缀
+        document.getElementById('removeOcPrefix').addEventListener('click', () => {
+            if (confirm('⚠️ 警告：此操作将永久修改数据库表结构，去除所有表名的"oc_"前缀！\n\n请确认：\n1. 已备份数据库\n2. 了解此操作的影响\n\n确定要继续吗？')) {
+                if (confirm('🔴 最后确认：此操作不可逆！确定要执行去除oc_前缀操作吗？')) {
+                    syncData('remove-oc-prefix');
+                }
+            }
+        });
     </script>
 </body>
 </html>
