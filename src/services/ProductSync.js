@@ -38,12 +38,12 @@ class ProductSync {
 
       // 获取需要删除的数据
       const [invalidData] = await conn.query(`
-        SELECT pov.*, p.product_id 
-        FROM oc_product_option_value pov
-        LEFT JOIN oc_product_option po ON pov.product_option_id = po.product_option_id
-        LEFT JOIN oc_product p ON po.product_id = p.product_id
+        SELECT pov.*, p.product_id
+        FROM product_option_value pov
+        LEFT JOIN product_option po ON pov.product_option_id = po.product_option_id
+        LEFT JOIN product p ON po.product_id = p.product_id
         WHERE pov.option_value_id NOT IN (
-          SELECT option_value_id FROM oc_option_value
+          SELECT option_value_id FROM \`option_value\`
         )
       `);
 
@@ -58,9 +58,9 @@ class ProductSync {
 
       // 删除无效数据
       const [result] = await conn.query(`
-        DELETE pov FROM oc_product_option_value pov
+        DELETE pov FROM product_option_value pov
         WHERE pov.option_value_id NOT IN (
-          SELECT option_value_id FROM oc_option_value
+          SELECT option_value_id FROM \`option_value\`
         )
       `);
 

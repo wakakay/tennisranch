@@ -30,13 +30,13 @@ class TaxSync {
       for (const row of rows) {
         logger.info(`正在同步tax_class记录: ${row.tax_class_id}`);
         await targetConn.query(
-          'REPLACE INTO oc_tax_class (tax_class_id, title, description) VALUES (?, ?, ?)',
+          'REPLACE INTO tax_class (tax_class_id, title, description) VALUES (?, ?, ?)',
           [row.tax_class_id, row.title, row.description]
         );
       }
-      
+
       // 验证同步结果
-      const [targetRows] = await targetConn.query('SELECT COUNT(*) as count FROM oc_tax_class');
+      const [targetRows] = await targetConn.query('SELECT COUNT(*) as count FROM tax_class');
       logger.info(`目标数据库现有 ${targetRows[0].count} 条tax_class记录`);
       
       // 提交事务
@@ -76,13 +76,13 @@ class TaxSync {
       for (const row of rows) {
         logger.info(`正在同步tax_rate记录: ${row.tax_rate_id}`);
         await targetConn.query(
-          'REPLACE INTO oc_tax_rate (tax_rate_id, geo_zone_id, name, rate, type) VALUES (?, ?, ?, ?, ?)',
+          'REPLACE INTO tax_rate (tax_rate_id, geo_zone_id, name, rate, type) VALUES (?, ?, ?, ?, ?)',
           [row.tax_rate_id, row.geo_zone_id, row.name, row.rate, row.type]
         );
       }
-      
+
       // 验证同步结果
-      const [targetRows] = await targetConn.query('SELECT COUNT(*) as count FROM oc_tax_rate');
+      const [targetRows] = await targetConn.query('SELECT COUNT(*) as count FROM tax_rate');
       logger.info(`目标数据库现有 ${targetRows[0].count} 条tax_rate记录`);
       
       await targetConn.commit();
@@ -117,19 +117,19 @@ class TaxSync {
       logger.info(`获取到 ${rows.length} 条tax_rate_to_customer_group数据`);
       
       // 清空目标表
-      logger.info('清空目标表oc_tax_rate_to_customer_group...');
-      await targetConn.query('DELETE FROM oc_tax_rate_to_customer_group');
-      
+      logger.info('清空目标表tax_rate_to_customer_group...');
+      await targetConn.query('DELETE FROM tax_rate_to_customer_group');
+
       for (const row of rows) {
         logger.info(`正在同步tax_rate_to_customer_group记录: ${row.tax_rate_id}_${row.customer_group_id}`);
         await targetConn.query(
-          'INSERT INTO oc_tax_rate_to_customer_group (tax_rate_id, customer_group_id) VALUES (?, ?)',
+          'INSERT INTO tax_rate_to_customer_group (tax_rate_id, customer_group_id) VALUES (?, ?)',
           [row.tax_rate_id, row.customer_group_id]
         );
       }
-      
+
       // 验证同步结果
-      const [targetRows] = await targetConn.query('SELECT COUNT(*) as count FROM oc_tax_rate_to_customer_group');
+      const [targetRows] = await targetConn.query('SELECT COUNT(*) as count FROM tax_rate_to_customer_group');
       logger.info(`目标数据库现有 ${targetRows[0].count} 条tax_rate_to_customer_group记录`);
       
       await targetConn.commit();
@@ -166,13 +166,13 @@ class TaxSync {
       for (const row of rows) {
         logger.info(`正在同步tax_rule记录: ${row.tax_rule_id}`);
         await targetConn.query(
-          'REPLACE INTO oc_tax_rule (tax_rule_id, tax_class_id, tax_rate_id, based, priority) VALUES (?, ?, ?, ?, ?)',
+          'REPLACE INTO tax_rule (tax_rule_id, tax_class_id, tax_rate_id, based, priority) VALUES (?, ?, ?, ?, ?)',
           [row.tax_rule_id, row.tax_class_id, row.tax_rate_id, row.based, row.priority]
         );
       }
-      
+
       // 验证同步结果
-      const [targetRows] = await targetConn.query('SELECT COUNT(*) as count FROM oc_tax_rule');
+      const [targetRows] = await targetConn.query('SELECT COUNT(*) as count FROM tax_rule');
       logger.info(`目标数据库现有 ${targetRows[0].count} 条tax_rule记录`);
       
       await targetConn.commit();
@@ -262,10 +262,10 @@ class TaxSync {
 
       // 验证各表的记录数
       const tables = [
-        { source: 'tax_class', target: 'oc_tax_class' },
-        { source: 'tax_rate', target: 'oc_tax_rate' },
-        { source: 'tax_rate_to_customer_group', target: 'oc_tax_rate_to_customer_group' },
-        { source: 'tax_rule', target: 'oc_tax_rule' }
+        { source: 'tax_class', target: 'tax_class' },
+        { source: 'tax_rate', target: 'tax_rate' },
+        { source: 'tax_rate_to_customer_group', target: 'tax_rate_to_customer_group' },
+        { source: 'tax_rule', target: 'tax_rule' }
       ];
 
       for (const table of tables) {

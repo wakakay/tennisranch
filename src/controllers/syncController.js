@@ -190,9 +190,9 @@ async function testDatabaseConnections() {
 
         // 验证目标数据库中必要的表是否存在
         for (const table of requiredTables) {
-            const [result] = await targetConn.query(`SHOW TABLES LIKE 'oc_${table}'`);
+            const [result] = await targetConn.query(`SHOW TABLES LIKE '${table}'`);
             if (result.length === 0) {
-                throw new Error(`目标数据库中缺少必要的表: oc_${table}`);
+                throw new Error(`目标数据库中缺少必要的表: ${table}`);
             }
         }
         logger.info('目标数据库表结构验证成功');

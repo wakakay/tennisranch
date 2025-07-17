@@ -14,9 +14,9 @@ class NewCustomerCouponSync {
 
       logger.info('开始创建新客户优惠券表...');
 
-      // 创建 oc_new_customer_coupon 表
+      // 创建 new_customer_coupon 表
       await conn.query(`
-        CREATE TABLE IF NOT EXISTS oc_new_customer_coupon (
+        CREATE TABLE IF NOT EXISTS new_customer_coupon (
           coupon_id int(11) NOT NULL AUTO_INCREMENT,
           name varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
           code varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -36,32 +36,32 @@ class NewCustomerCouponSync {
           PRIMARY KEY (coupon_id)
         ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
       `);
-      logger.info('创建 oc_new_customer_coupon 表完成');
+      logger.info('创建 new_customer_coupon 表完成');
 
-      // 创建 oc_new_customer_coupon_product 表
+      // 创建 new_customer_coupon_product 表
       await conn.query(`
-        CREATE TABLE IF NOT EXISTS oc_new_customer_coupon_product (
+        CREATE TABLE IF NOT EXISTS new_customer_coupon_product (
           coupon_product_id int(11) NOT NULL AUTO_INCREMENT,
           coupon_id int(11) DEFAULT NULL,
           product_id int(11) DEFAULT NULL,
           PRIMARY KEY (coupon_product_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
       `);
-      logger.info('创建 oc_new_customer_coupon_product 表完成');
+      logger.info('创建 new_customer_coupon_product 表完成');
 
-      // 创建 oc_new_customer_coupon_category 表
+      // 创建 new_customer_coupon_category 表
       await conn.query(`
-        CREATE TABLE IF NOT EXISTS oc_new_customer_coupon_category (
+        CREATE TABLE IF NOT EXISTS new_customer_coupon_category (
           coupon_id int(11) NOT NULL,
           category_id int(11) NOT NULL,
           PRIMARY KEY (coupon_id,category_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
       `);
-      logger.info('创建 oc_new_customer_coupon_category 表完成');
+      logger.info('创建 new_customer_coupon_category 表完成');
 
-      // 创建 oc_new_customer_coupon_history 表
+      // 创建 new_customer_coupon_history 表
       await conn.query(`
-        CREATE TABLE IF NOT EXISTS oc_new_customer_coupon_history (
+        CREATE TABLE IF NOT EXISTS new_customer_coupon_history (
           coupon_history_id int(11) NOT NULL AUTO_INCREMENT,
           coupon_id int(11) DEFAULT NULL,
           order_id int(11) DEFAULT '0',
@@ -71,7 +71,7 @@ class NewCustomerCouponSync {
           PRIMARY KEY (coupon_history_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC
       `);
-      logger.info('创建 oc_new_customer_coupon_history 表完成');
+      logger.info('创建 new_customer_coupon_history 表完成');
 
       await conn.commit();
       logger.info('新客户优惠券表创建完成');
@@ -145,10 +145,10 @@ class NewCustomerCouponSync {
 
       // 清空目标表
       logger.info('清空目标表...');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_new_customer_coupon');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_new_customer_coupon_product');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_new_customer_coupon_category');
-      await targetConn.query('DELETE FROM tennisranch_4x.oc_new_customer_coupon_history');
+      await targetConn.query('DELETE FROM tennisranch_4x.new_customer_coupon');
+      await targetConn.query('DELETE FROM tennisranch_4x.new_customer_coupon_product');
+      await targetConn.query('DELETE FROM tennisranch_4x.new_customer_coupon_category');
+      await targetConn.query('DELETE FROM tennisranch_4x.new_customer_coupon_history');
       logger.info('目标表清空完成');
 
       // 同步 new_customer_coupon 表
@@ -164,8 +164,8 @@ class NewCustomerCouponSync {
 
       if (coupons.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_new_customer_coupon (
-            coupon_id, name, code, type, discount, logged, shipping, total, 
+          INSERT INTO tennisranch_4x.new_customer_coupon (
+            coupon_id, name, code, type, discount, logged, shipping, total,
             date_start, date_end, uses_total, uses_customer, status, date_added,
             is_special_product, is_include
           ) VALUES ?
@@ -184,7 +184,7 @@ class NewCustomerCouponSync {
 
       if (couponProducts.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_new_customer_coupon_product (
+          INSERT INTO tennisranch_4x.new_customer_coupon_product (
             coupon_product_id, coupon_id, product_id
           ) VALUES ?
         `, [couponProducts.map(product => Object.values(product))]);
@@ -202,7 +202,7 @@ class NewCustomerCouponSync {
 
       if (couponCategories.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_new_customer_coupon_category (
+          INSERT INTO tennisranch_4x.new_customer_coupon_category (
             coupon_id, category_id
           ) VALUES ?
         `, [couponCategories.map(category => Object.values(category))]);
@@ -221,8 +221,8 @@ class NewCustomerCouponSync {
 
       if (couponHistories.length > 0) {
         await targetConn.query(`
-          INSERT INTO tennisranch_4x.oc_new_customer_coupon_history (
-            coupon_history_id, coupon_id, order_id, customer_id, 
+          INSERT INTO tennisranch_4x.new_customer_coupon_history (
+            coupon_history_id, coupon_id, order_id, customer_id,
             amount, date_added
           ) VALUES ?
         `, [couponHistories.map(history => Object.values(history))]);

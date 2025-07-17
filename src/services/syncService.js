@@ -22,19 +22,19 @@ async function syncCategory() {
         try {
             // 1. 同步主分类表
             await syncMainCategory(sourceConnection, targetConnection);
-            
+
             // 2. 同步分类描述表
             await syncCategoryDescription(sourceConnection, targetConnection);
-            
+
             // 3. 同步分类筛选表
             await syncCategoryFilter(sourceConnection, targetConnection);
-            
+
             // 4. 同步分类路径表
             await syncCategoryPath(sourceConnection, targetConnection);
-            
+
             // 5. 同步分类布局表
             await syncCategoryToLayout(sourceConnection, targetConnection);
-            
+
             // 6. 同步分类商店关联表
             await syncCategoryToStore(sourceConnection, targetConnection);
 
@@ -295,13 +295,13 @@ async function syncOption() {
 
         // 1. 同步主表
         await syncMainOption(sourceConnection, targetConnection);
-        
+
         // 2. 同步描述表
         await syncOptionDescription(sourceConnection, targetConnection);
-        
+
         // 3. 同步值表
         await syncOptionValue(sourceConnection, targetConnection);
-        
+
         // 4. 同步值描述表
         await syncOptionValueDescription(sourceConnection, targetConnection);
 
@@ -330,7 +330,7 @@ async function syncOptionExtended() {
         logger.info('开始修改 option_description 表...');
         // 1. 修改 option_description 表，添加 related_children_option_id 字段
         await targetConnection.query(`
-            ALTER TABLE option_description
+            ALTER TABLE \`option_description\`
             ADD COLUMN related_children_option_id int(11) DEFAULT NULL AFTER name
         `);
         logger.info('option_description 表修改成功');
@@ -338,7 +338,7 @@ async function syncOptionExtended() {
         logger.info('开始修改 option_value 表...');
         // 2. 修改 option_value 表，添加 price_prefix, price, related_option_value_ids 字段
         await targetConnection.query(`
-            ALTER TABLE option_value
+            ALTER TABLE \`option_value\`
             ADD COLUMN price_prefix varchar(1) DEFAULT NULL AFTER option_id,
             ADD COLUMN price decimal(15,4) DEFAULT NULL AFTER price_prefix,
             ADD COLUMN related_option_value_ids text COLLATE utf8mb4_unicode_ci AFTER price
@@ -348,7 +348,7 @@ async function syncOptionExtended() {
         logger.info('开始修改 option_value_description 表...');
         // 3. 修改 option_value_description 表，添加 linkage_option_id 字段
         await targetConnection.query(`
-            ALTER TABLE option_value_description
+            ALTER TABLE \`option_value_description\`
             ADD COLUMN linkage_option_id int(11) DEFAULT NULL AFTER name
         `);
         logger.info('option_value_description 表修改成功');
@@ -377,11 +377,11 @@ async function syncOptionExtended() {
  */
 async function syncMainOption(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE option');
-    
+    await targetConnection.query('TRUNCATE TABLE `option`');
+
     // 获取源数据
     const [rows] = await sourceConnection.query('SELECT * FROM `option`');
-    
+
     if (rows.length > 0) {
         const values = rows.map(row => [
             row.option_id,
@@ -389,13 +389,13 @@ async function syncMainOption(sourceConnection, targetConnection) {
             null, // validation
             row.sort_order
         ]);
-        
+
         await targetConnection.query(
-            'INSERT INTO option (option_id, type, validation, sort_order) VALUES ?',
+            'INSERT INTO `option` (option_id, type, validation, sort_order) VALUES ?',
             [values]
         );
     }
-    
+
     logger.info(`成功同步 ${rows.length} 条主表数据`);
 }
 
@@ -406,11 +406,11 @@ async function syncMainOption(sourceConnection, targetConnection) {
  */
 async function syncOptionDescription(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE option_description');
-    
+    await targetConnection.query('TRUNCATE TABLE `option_description`');
+
     // 获取源数据
     const [rows] = await sourceConnection.query('SELECT * FROM `option_description`');
-    
+
     if (rows.length > 0) {
         const values = rows.map(row => [
             row.option_id,
@@ -418,13 +418,13 @@ async function syncOptionDescription(sourceConnection, targetConnection) {
             row.name,
             row.related_children_option_id || null
         ]);
-        
+
         await targetConnection.query(
-            'INSERT INTO option_description (option_id, language_id, name, related_children_option_id) VALUES ?',
+            'INSERT INTO `option_description` (option_id, language_id, name, related_children_option_id) VALUES ?',
             [values]
         );
     }
-    
+
     logger.info(`成功同步 ${rows.length} 条描述表数据`);
 }
 
@@ -435,11 +435,11 @@ async function syncOptionDescription(sourceConnection, targetConnection) {
  */
 async function syncOptionValue(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE option_value');
-    
+    await targetConnection.query('TRUNCATE TABLE `option_value`');
+
     // 获取源数据
     const [rows] = await sourceConnection.query('SELECT * FROM `option_value`');
-    
+
     if (rows.length > 0) {
         const values = rows.map(row => [
             row.option_value_id,
@@ -450,13 +450,13 @@ async function syncOptionValue(sourceConnection, targetConnection) {
             row.image,
             row.sort_order
         ]);
-        
+
         await targetConnection.query(
-            'INSERT INTO option_value (option_value_id, option_id, price_prefix, price, related_option_value_ids, image, sort_order) VALUES ?',
+            'INSERT INTO `option_value` (option_value_id, option_id, price_prefix, price, related_option_value_ids, image, sort_order) VALUES ?',
             [values]
         );
     }
-    
+
     logger.info(`成功同步 ${rows.length} 条值表数据`);
 }
 
@@ -467,11 +467,11 @@ async function syncOptionValue(sourceConnection, targetConnection) {
  */
 async function syncOptionValueDescription(sourceConnection, targetConnection) {
     // 清空目标表
-    await targetConnection.query('TRUNCATE TABLE option_value_description');
-    
+    await targetConnection.query('TRUNCATE TABLE `option_value_description`');
+
     // 获取源数据
     const [rows] = await sourceConnection.query('SELECT * FROM `option_value_description`');
-    
+
     if (rows.length > 0) {
         const values = rows.map(row => [
             row.option_value_id,
@@ -480,13 +480,13 @@ async function syncOptionValueDescription(sourceConnection, targetConnection) {
             row.name,
             row.linkage_option_id || null
         ]);
-        
+
         await targetConnection.query(
-            'INSERT INTO option_value_description (option_value_id, language_id, option_id, name, linkage_option_id) VALUES ?',
+            'INSERT INTO `option_value_description` (option_value_id, language_id, option_id, name, linkage_option_id) VALUES ?',
             [values]
         );
     }
-    
+
     logger.info(`成功同步 ${rows.length} 条值描述表数据`);
 }
 
@@ -509,19 +509,19 @@ async function syncAllFilters() {
         try {
             // 1. 同步筛选组
             await syncFilterGroup(sourceConnection, targetConnection);
-            
+
             // 2. 同步筛选组描述
             await syncFilterGroupDescription(sourceConnection, targetConnection);
-            
+
             // 3. 同步筛选
             await syncFilterData(sourceConnection, targetConnection);
-            
+
             // 4. 同步筛选描述
             await syncFilterDescription(sourceConnection, targetConnection);
-            
+
             // 5. 同步分类筛选关联
             await syncCategoryFilter(sourceConnection, targetConnection);
-            
+
             // 6. 同步产品筛选关联
             await syncProductFilter(sourceConnection, targetConnection);
 
@@ -705,7 +705,7 @@ async function syncManufacturer() {
         try {
             // 1. 同步制造商表
             await syncManufacturerTable(sourceConnection, targetConnection);
-            
+
             // 2. 同步制造商商店关联表
             await syncManufacturerToStoreTable(sourceConnection, targetConnection);
 
@@ -804,4 +804,4 @@ module.exports = {
     syncFilter: syncAllFilters,
     syncManufacturer,
     syncTax
-}; 
+};

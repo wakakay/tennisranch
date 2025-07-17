@@ -13,20 +13,20 @@ class CustomerSync {
   async syncAddress() {
     const conn = await sourcePool.getConnection();
     const targetConn = await targetPool.getConnection();
-    
+
     try {
       await targetConn.beginTransaction();
-      
+
       logger.info('开始获取 address 源数据...');
       const [rows] = await conn.query(
         'SELECT * FROM address'
       );
       logger.info(`获取到 ${rows.length} 条 address 数据`);
-      
+
       // 清空目标表
       logger.info('清空目标表 address...');
       await targetConn.query('DELETE FROM address');
-      
+
       // 批量插入数据
       if (rows.length > 0) {
         const values = rows.map(row => [
@@ -54,15 +54,15 @@ class CustomerSync {
           [values]
         );
       }
-      
+
       await targetConn.commit();
       logger.info(`成功同步 ${rows.length} 条 address 数据`);
-      
+
     } catch (error) {
       await targetConn.rollback();
       logger.error('address 表同步失败:', error);
       throw error;
-      
+
     } finally {
       conn.release();
       targetConn.release();
@@ -76,30 +76,30 @@ class CustomerSync {
   async syncCustomer() {
     const conn = await sourcePool.getConnection();
     const targetConn = await targetPool.getConnection();
-    
+
     try {
       // 设置事务超时时间为 30 分钟
       await targetConn.query('SET SESSION wait_timeout = 1800');
       await targetConn.beginTransaction();
-      
+
       logger.info('开始获取 customer 源数据...');
       const [rows] = await conn.query(
         'SELECT * FROM customer'
       );
       logger.info(`获取到 ${rows.length} 条 customer 数据`);
-      
+
       // 检查 IP 字段
       const ipCount = rows.filter(row => row.ip && row.ip.trim() !== '').length;
       logger.info(`源数据中有 ${ipCount} 条记录的 IP 字段有值`);
-      
+
       // 临时禁用外键检查
       logger.info('临时禁用外键检查...');
       await targetConn.query('SET FOREIGN_KEY_CHECKS = 0');
-      
+
       // 清空目标表
       logger.info('清空目标表 customer...');
       await targetConn.query('TRUNCATE TABLE customer');
-      
+
       // 批量插入数据
       if (rows.length > 0) {
         // 分批处理数据，每批 500 条
@@ -116,7 +116,7 @@ class CustomerSync {
             if (!ip || ip.trim() === '') {
               ip = '0.0.0.0';
             }
-            
+
             return [
               row.customer_id,
               row.customer_group_id,
@@ -191,19 +191,19 @@ class CustomerSync {
         }
         logger.info(`完成处理 ${addressCount} 条 address 关联`);
       }
-      
+
       // 重新启用外键检查
       logger.info('重新启用外键检查...');
       await targetConn.query('SET FOREIGN_KEY_CHECKS = 1');
-      
+
       await targetConn.commit();
       logger.info(`成功同步 ${rows.length} 条 customer 数据`);
-      
+
     } catch (error) {
       await targetConn.rollback();
       logger.error('customer 表同步失败:', error);
       throw error;
-      
+
     } finally {
       // 确保外键检查被重新启用
       try {
@@ -223,27 +223,27 @@ class CustomerSync {
   async syncAll() {
     try {
       logger.info('开始同步所有 customer 相关表...');
-      
+
       // 同步前检查数据库连接
       await this.testConnection();
-      
+
       // 先同步 address 表
       await this.syncAddress();
-      
+
       // 再同步 customer 表
       await this.syncCustomer();
-      
+
       // 同步后验证数据
       await this.verifySync();
-      
+
       return {
         success: true,
         message: '所有 customer 相关表同步完成'
       };
-      
+
     } catch (error) {
       logger.error('customer 同步过程出错:', error);
-      
+
       return {
         success: false,
         message: `同步失败: ${error.message}`
@@ -281,9 +281,9 @@ class CustomerSync {
 
       // 验证目标数据库中必要的表是否存在
       for (const table of requiredTables) {
-        const [result] = await targetConn.query(`SHOW TABLES LIKE 'oc_${table}'`);
+        const [result] = await targetConn.query(`SHOW TABLES LIKE '${table}'`);
         if (result.length === 0) {
-          throw new Error(`目标数据库中缺少必要的表: oc_${table}`);
+          throw new Error(`目标数据库中缺少必要的表: ${table}`);
         }
       }
       logger.info('目标数据库表结构验证成功');
@@ -315,7 +315,7 @@ class CustomerSync {
       for (const table of tables) {
         const [sourceCount] = await sourceConn.query(`SELECT COUNT(*) as count FROM ${table.source}`);
         const [targetCount] = await targetConn.query(`SELECT COUNT(*) as count FROM ${table.target}`);
-        
+
         logger.info(`${table.source} -> ${table.target} 同步结果:`,
           `源数据: ${sourceCount[0].count}条`,
           `目标数据: ${targetCount[0].count}条`
@@ -338,4 +338,4 @@ class CustomerSync {
   }
 }
 
-module.exports = new CustomerSync(); 
+module.exports = new CustomerSync();
