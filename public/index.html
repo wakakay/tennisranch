@@ -75,7 +75,7 @@
 <body>
     <div class="container">
         <h1></h1>
-        <div style="display:block">
+        <div style="display:none">
             <div class="button-group">
                 <button id="syncCategory">Sync Category</button>
             </div>
@@ -133,6 +133,13 @@
         <div class="button-group">
             <button id="syncBlog">Sync Blog</button>
         </div>
+
+      <div class="button-group">
+        <button id="syncOrderHistory">Sync Order History</button>
+        <button id="syncOrderOption">Sync Order Option</button>
+         <button id="syncOrderProduct">Sync Order Product</button>
+        
+      </div>
 
         <!-- 危险操作区域 -->
         <!--<div style="margin-top: 30px; padding: 20px; border: 2px solid #ff6b6b; border-radius: 8px; background-color: #fff5f5;">
@@ -195,6 +202,10 @@
         document.getElementById('syncGoogleBase').addEventListener('click', () => syncData('google-base'));
         document.getElementById('syncTag').addEventListener('click', () => syncData('tag'));
         document.getElementById('syncBlog').addEventListener('click', () => syncData('blog'));
+
+        document.getElementById('syncOrderHistory').addEventListener('click', () => syncData('order-history'));
+        document.getElementById('syncOrderOption').addEventListener('click', () => syncData('order-option'));
+        document.getElementById('syncOrderProduct').addEventListener('click', () => syncData('order-product'));
 
         // 危险操作：去除oc_前缀
         document.getElementById('removeOcPrefix').addEventListener('click', () => {

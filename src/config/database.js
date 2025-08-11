@@ -4,7 +4,7 @@ const logger = require('../utils/logger');
 /**
  * 源数据库配置
  */
-const sourceConfig = {
+/*const sourceConfig = {
   host: '8.219.238.63',
   port: 3306,
   user: 'tennisranch_2x_t',
@@ -13,12 +13,23 @@ const sourceConfig = {
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
+};*/
+
+const sourceConfig = {
+  host: '127.0.0.1',
+  port: 8889,
+  user: 'root',
+  password: 'root',
+  database: 'tennisranch_3x',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 };
 
 /**
  * 目标数据库配置
  */
-const targetConfig = {
+/*const targetConfig = {
   host: '8.219.238.63',
   port: 3306,
   user: 'tennisranch_4x',
@@ -27,7 +38,19 @@ const targetConfig = {
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0
+};*/
+
+const targetConfig = {
+  host: '127.0.0.1',
+  port: 8889,
+  user: 'root',
+  password: 'root',
+  database: 'tennisranch_4x',
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 };
+
 
 /**
  * 创建数据库连接池

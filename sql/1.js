@@ -1,9 +1,9 @@
 CREATE TABLE `oc_order` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,
-  `subscription_id` int(11) DEFAULT '0', // 新增
+  `subscription_id` int(11) DEFAULT '0', // 新增0
   `invoice_no` int(11) DEFAULT '0',
   `invoice_prefix` varchar(26) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `transaction_id` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL, // 新增
+  `transaction_id` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL, // 新增null
   `store_id` int(11) DEFAULT '0',
   `store_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `store_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -29,7 +29,7 @@ CREATE TABLE `oc_order` (
   `payment_address_format` text COLLATE utf8mb4_unicode_ci,
   `payment_custom_field` text COLLATE utf8mb4_unicode_ci,
   `payment_method` text COLLATE utf8mb4_unicode_ci,
-  `shipping_address_id` int(11) DEFAULT NULL, // 新增
+  `shipping_address_id` int(11) DEFAULT NULL, // 新增，用户地址薄地址id
   `shipping_firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `shipping_lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `shipping_company` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE `oc_order` (
   `marketing_id` int(11) DEFAULT '0',
   `tracking` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `language_id` int(11) DEFAULT NULL,
-  `language_code` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL, // 新增
+  `language_code` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL, // 新增 默认en-gb
   `currency_id` int(11) DEFAULT NULL,
   `currency_code` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `currency_value` decimal(15,8) DEFAULT '1.00000000',
@@ -111,7 +111,7 @@ CREATE TABLE `order` (
   `shipping_address_format` text NOT NULL,
   `shipping_custom_field` text NOT NULL,
   `shipping_method` varchar(128) NOT NULL,
-  `shipping_code` varchar(128) NOT NULL, // 新增
+  `shipping_code` varchar(128) NOT NULL, // 移除
   `comment` text NOT NULL,
   `total` decimal(15,4) NOT NULL DEFAULT '0.0000',
   `order_status_id` int(11) NOT NULL DEFAULT '0',
@@ -136,28 +136,44 @@ CREATE TABLE `order` (
 
 
 
-oc_order_
-oc_order_history
-oc_order_option
-oc_order_product
-oc_order_status
-oc_order_subscription
-oc_order_total
+order_
+order_history
+order_option
+order_product
+order_status
+order_subscription
+order_total
 
 
 
 
 oc_order_history 新增 date_added
 oc_order_option 新增 type
-oc_order_product 新增了master_id
-oc_order_total 新增了extension
+oc_order_product 新增了master_id默认0
+oc_order_total 新增了extension默认opencart
 
 
 
 
+很好，现在我在public/index.html中新增了【Sync Order Produc】按钮
 
-
-
+1、首先同步order_product，这个相比目标数据库多了一个master_id(默认给0)，其他字段一样
+CREATE TABLE `order_product` (
+  `order_product_id` int(11) NOT NULL AUTO_INCREMENT,
+  `order_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `master_id` int(11) DEFAULT '0',
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `model` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `quantity` int(4) DEFAULT '1',
+  `price` decimal(15,4) DEFAULT '0.0000',
+  `total` decimal(15,4) DEFAULT '0.0000',
+  `tax` decimal(15,4) DEFAULT '0.0000',
+  `reward` int(8) DEFAULT '0',
+  PRIMARY KEY (`order_product_id`),
+  KEY `order_id` (`order_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+2、代码风格参照order_history的
 
 
 

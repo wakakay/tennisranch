@@ -10,6 +10,8 @@ const CartController = require('../controllers/CartController');
 const InformationController = require('../controllers/InformationController');
 const GoogleBaseController = require('../controllers/GoogleBaseController');
 const BlogController = require('../controllers/BlogController');
+const OrderHistoryController = require('../controllers/OrderHistoryController');
+const OrderOptionController = require('../controllers/OrderOptionController');
 const logger = require('../utils/logger');
 
 /**
@@ -137,6 +139,18 @@ router.post('/google-base', GoogleBaseController.sync);
  * @route POST /api/sync/blog
  */
 router.post('/blog', BlogController.sync);
+
+/**
+ * 同步订单历史数据
+ * @route POST /api/sync/order-history
+ */
+router.post('/order-history', OrderHistoryController.sync);
+
+/**
+ * 同步订单选项数据
+ * @route POST /api/sync/order-option
+ */
+router.post('/order-option', OrderOptionController.sync);
 
 /**
  * 去除目标数据库表名的oc_前缀
