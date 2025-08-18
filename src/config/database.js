@@ -4,16 +4,6 @@ const logger = require('../utils/logger');
 /**
  * 源数据库配置
  */
-/*const sourceConfig = {
-  host: '8.219.238.63',
-  port: 3306,
-  user: 'tennisranch_2x_t',
-  password: 'YwxAa4Pb7jWd5jGe',
-  database: 'tennisranch_2x_t',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-};*/
 
 const sourceConfig = {
   host: '127.0.0.1',
@@ -26,20 +16,10 @@ const sourceConfig = {
   queueLimit: 0
 };
 
+
 /**
  * 目标数据库配置
  */
-/*const targetConfig = {
-  host: '8.219.238.63',
-  port: 3306,
-  user: 'tennisranch_4x',
-  password: 'YwxAa4Pb7jWd5jGe',
-  database: 'tennisranch_4x',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
-};*/
-
 const targetConfig = {
   host: '127.0.0.1',
   port: 8889,

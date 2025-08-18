@@ -1,4 +1,4 @@
-const OrderSync = require('../services/OrderSync');
+const OrderMainSync = require('../services/OrderMainSync');
 const logger = require('../utils/logger');
 
 /**
@@ -6,31 +6,23 @@ const logger = require('../utils/logger');
  */
 class OrderController {
   /**
-   * 同步订单数据
+   * 同步订单主表数据
+   * @param {Object} req - 请求对象
+   * @param {Object} res - 响应对象
+   * @returns {Promise<void>}
    */
   async sync(req, res) {
     try {
-      logger.info('开始执行订单同步操作...');
-      await OrderSync.syncOrder();
-
-      logger.success('订单同步操作完成');
+      await OrderMainSync.syncOrderMain();
       res.json({
         success: true,
-        message: '订单数据同步完成'
+        message: '订单主表数据同步成功'
       });
     } catch (error) {
-      // {{ AURA-X: 改进控制器错误日志记录 }}
-      logger.error('订单同步操作失败:', {
-        message: error.message,
-        stack: error.stack,
-        code: error.code,
-        errno: error.errno,
-        sqlState: error.sqlState,
-        sqlMessage: error.sqlMessage
-      });
+      logger.error('订单主表数据同步失败:', error);
       res.status(500).json({
         success: false,
-        message: '订单同步操作失败',
+        message: '订单主表数据同步失败',
         error: error.message
       });
     }

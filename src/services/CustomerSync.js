@@ -225,13 +225,13 @@ class CustomerSync {
       logger.info('开始同步所有 customer 相关表...');
 
       // 同步前检查数据库连接
-      await this.testConnection();
+      //await this.testConnection();
 
       // 先同步 address 表
-      await this.syncAddress();
+      //await this.syncAddress();
 
       // 再同步 customer 表
-      await this.syncCustomer();
+      //await this.syncCustomer();
 
       // 同步后验证数据
       await this.verifySync();

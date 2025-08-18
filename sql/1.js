@@ -155,24 +155,83 @@ oc_order_total 新增了extension默认opencart
 
 
 
-很好，现在我在public/index.html中新增了【Sync Order Produc】按钮
+很好，现在我在public/index.html中新增了【Sync Order】按钮
 
-1、首先同步order_product，这个相比目标数据库多了一个master_id(默认给0)，其他字段一样
-CREATE TABLE `order_product` (
-  `order_product_id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `master_id` int(11) DEFAULT '0',
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `model` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `quantity` int(4) DEFAULT '1',
-  `price` decimal(15,4) DEFAULT '0.0000',
+1、首先同步order_total，这个相比目标数据库多了的字段有
+subscription_id(默认给0),
+transaction_id(默认给null)，
+payment_address_id(默认给0)
+language_code(默认给'en-gb')
+shipping_address_id(默认给0),
+不需要同步的2个字段fax,shipping_code
+其他字段一样
+CREATE TABLE `order` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT,
+  `subscription_id` int(11) DEFAULT '0',
+  `invoice_no` int(11) DEFAULT '0',
+  `invoice_prefix` varchar(26) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `transaction_id` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `store_id` int(11) DEFAULT '0',
+  `store_name` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `store_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `customer_id` int(11) DEFAULT '0',
+  `customer_group_id` int(11) DEFAULT '0',
+  `firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(96) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `telephone` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `custom_field` text COLLATE utf8mb4_unicode_ci,
+  `payment_address_id` int(11) DEFAULT '0',
+  `payment_firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_company` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_address_1` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_address_2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_city` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_postcode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_country` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_country_id` int(11) DEFAULT '0',
+  `payment_zone` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_zone_id` int(11) DEFAULT '0',
+  `payment_address_format` text COLLATE utf8mb4_unicode_ci,
+  `payment_custom_field` text COLLATE utf8mb4_unicode_ci,
+  `payment_method` text COLLATE utf8mb4_unicode_ci,
+  `shipping_address_id` int(11) DEFAULT NULL,
+  `shipping_firstname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_lastname` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_company` varchar(60) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_address_1` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_address_2` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_city` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_postcode` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_country` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_country_id` int(11) DEFAULT '0',
+  `shipping_zone` varchar(128) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `shipping_zone_id` int(11) DEFAULT '0',
+  `shipping_address_format` text COLLATE utf8mb4_unicode_ci,
+  `shipping_custom_field` text COLLATE utf8mb4_unicode_ci,
+  `shipping_method` text COLLATE utf8mb4_unicode_ci,
+  `comment` text COLLATE utf8mb4_unicode_ci,
   `total` decimal(15,4) DEFAULT '0.0000',
-  `tax` decimal(15,4) DEFAULT '0.0000',
-  `reward` int(8) DEFAULT '0',
-  PRIMARY KEY (`order_product_id`),
-  KEY `order_id` (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
+  `order_status_id` int(11) DEFAULT '0',
+  `affiliate_id` int(11) DEFAULT '0',
+  `commission` decimal(15,4) DEFAULT NULL,
+  `marketing_id` int(11) DEFAULT '0',
+  `tracking` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `language_id` int(11) DEFAULT NULL,
+  `language_code` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `currency_id` int(11) DEFAULT NULL,
+  `currency_code` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `currency_value` decimal(15,8) DEFAULT '1.00000000',
+  `ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `forwarded_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `accept_language` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date_added` datetime DEFAULT NULL,
+  `date_modified` datetime DEFAULT NULL,
+  PRIMARY KEY (`order_id`),
+  KEY `email` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci ROW_FORMAT=DYNAMIC;
 2、代码风格参照order_history的
 
 

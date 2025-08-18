@@ -10,8 +10,11 @@ const CartController = require('../controllers/CartController');
 const InformationController = require('../controllers/InformationController');
 const GoogleBaseController = require('../controllers/GoogleBaseController');
 const BlogController = require('../controllers/BlogController');
+const OrderController = require('../controllers/OrderController');
 const OrderHistoryController = require('../controllers/OrderHistoryController');
 const OrderOptionController = require('../controllers/OrderOptionController');
+const OrderProductController = require('../controllers/OrderProductController');
+const OrderTotalController = require('../controllers/OrderTotalController');
 const logger = require('../utils/logger');
 
 /**
@@ -141,6 +144,12 @@ router.post('/google-base', GoogleBaseController.sync);
 router.post('/blog', BlogController.sync);
 
 /**
+ * 同步订单主表数据
+ * @route POST /api/sync/order
+ */
+router.post('/order', OrderController.sync);
+
+/**
  * 同步订单历史数据
  * @route POST /api/sync/order-history
  */
@@ -151,6 +160,18 @@ router.post('/order-history', OrderHistoryController.sync);
  * @route POST /api/sync/order-option
  */
 router.post('/order-option', OrderOptionController.sync);
+
+/**
+ * 同步订单产品数据
+ * @route POST /api/sync/order-product
+ */
+router.post('/order-product', OrderProductController.sync);
+
+/**
+ * 同步订单总计数据
+ * @route POST /api/sync/order-total
+ */
+router.post('/order-total', OrderTotalController.sync);
 
 /**
  * 去除目标数据库表名的oc_前缀
